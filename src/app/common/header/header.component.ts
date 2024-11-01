@@ -10,6 +10,7 @@ import { Component, OnInit } from '@angular/core';
 export class HeaderComponent implements OnInit {
   public userImg: string = '';
   public isDropdownOpen: boolean = false;
+  public isMobileHeaderOpen: boolean = false;
 
   ngOnInit(): void {
     this.userImg = "https://ui-avatars.com/api/?name=Danula+Rathnayaka&size=128&rounded=true&background=0D8ABC&color=fff";
@@ -17,5 +18,9 @@ export class HeaderComponent implements OnInit {
 
   toggleDropdown(): void {
     this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
+  toggleMobileHeader(): void {
+    this.isMobileHeaderOpen = !this.isMobileHeaderOpen
   }
 }
