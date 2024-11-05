@@ -2,3 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 @import "~swiper/swiper-bundle.min.css";
+
+html {
+    scroll-behavior: smooth;
+}

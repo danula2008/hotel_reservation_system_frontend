@@ -35,7 +35,7 @@ export class ExploreComponent {
   public selectedFilter: string = "All";
   public showDropDown: boolean = false;
   public searchTxt: string = "";
-  selectedId: number | null = 1;
+  selectedId: number | null = null;
   public resourceOptions:string[] = ["All", "Rooms", "Halls", "Day Out Packages"]
   selectedOption = this.resourceOptions[0];  
 
