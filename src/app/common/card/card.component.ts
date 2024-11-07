@@ -8,10 +8,6 @@ import { Component, Input } from '@angular/core';
   templateUrl: './card.component.html'
 })
 export class CardComponent {
-
   @Input()
-  public star:number = 0;
-
-  @Input()
-  public popularChoice: boolean = false;
+  public resource: any;
 }
