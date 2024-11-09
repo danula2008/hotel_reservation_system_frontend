@@ -1,88 +1,110 @@
-<div class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-    <div class="bg-white rounded-lg shadow-lg max-w-5xl w-full overflow-hidden">
+<div class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-70 transition-opacity duration-300">
+    <div
+        class="bg-white rounded-xl shadow-2xl w-full max-w-5xl overflow-y-auto max-h-[90vh] scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
         <div class="relative">
             <!-- Close Button -->
             <button
-                class="absolute top-4 right-4 bg-red-500 text-white rounded-full p-2 hover:bg-red-600 focus:outline-none transition duration-200"
+                class="absolute top-1 right-4 text-gray-500 hover:scale-110 text-3xl focus:outline-none transition-transform transform duration-150 z-50"
                 (click)="closePopup()">
                 &times;
             </button>
 
+
             <div class="flex flex-col md:flex-row">
                 <!-- Product Images -->
-                <div class="w-full md:w-1/2 p-4">
-                    <img src="{{selectedSrc}}" alt="Product" class="w-full h-auto rounded-lg shadow-md mb-4"
-                        id="mainImage">
-                    <div class="flex gap-4 overflow-x-auto py-4 justify-center">
-                        <img *ngFor="let img of imgAr" src="{{img}}"
-                            class="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-md cursor-pointer opacity-60 hover:opacity-100 transition duration-300"
+                <div class="w-full md:w-1/2 p-6 flex flex-col items-center">
+                    <!-- Main Image with Close Button on Top -->
+                    <div
+                        class="relative group w-full max-w-md max-h-80 h-auto overflow-hidden rounded-lg shadow-lg mb-4">
+                        <img src="{{selectedSrc}}" alt="Product"
+                            class="w-full h-full object-cover rounded-lg transition-transform duration-300 group-hover:scale-105"
+                            id="mainImage">
+                    </div>
+
+                    <!-- Thumbnail Scrolling Container with selected thumbnail highlight -->
+                    <div class="flex gap-3 overflow-x-auto py-4 max-w-full justify-center">
+                        <img *ngFor="let img of imgAr" src="{{img}}" [class.opacity-100]="img === selectedSrc"
+                            [class.opacity-60]="img !== selectedSrc" [class.border-2]="img === selectedSrc"
+                            class="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-lg cursor-pointer transition-all duration-300 hover:opacity-100 border-blue-600"
                             (click)="changeImage(img)">
                     </div>
                 </div>
 
                 <!-- Product Details -->
                 <div class="w-full md:w-1/2 p-6">
-                    <h2 class="text-3xl font-bold mb-2 text-gray-800">Sea View Hotel Room</h2>
-                    <p class="text-gray-600 mb-2 text-sm">Room Code: R001</p>
-                    <div class="flex items-center mb-4">
-                        <span class="text-2xl font-bold mr-2 text-blue-600">$349.99</span>
-                        <span class="text-gray-500 line-through">$399.99</span>
+                    <h2 class="text-2xl sm:text-3xl font-semibold mb-3 text-gray-800">{{resource.name}}</h2>
+                    <p class="text-gray-500 mb-2">Room Code: {{resource.id}}</p>
+                    <span class="text-xl sm:text-2xl font-semibold text-blue-600 mb-4 block">Rs.
+                        {{resource.price}}</span>
+
+                    <!-- Rating -->
+                    <div class="flex items-center">
+                        <ng-container *ngFor="let item of [].constructor(resource.rating)">
+                            <svg class="w-5 h-5 text-yellow-500" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 22 20">
+                                <path
+                                    d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                            </svg>
+                        </ng-container>
+                        <ng-container *ngFor="let item of [].constructor(5 - resource.rating)">
+                            <svg class="w-5 h-5 text-gray-300" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 22 20">
+                                <path
+                                    d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                            </svg>
+                        </ng-container>
+                        <span class="ml-2 text-gray-600">{{resource.rating}}.0</span>
                     </div>
 
-                    <div class="flex items-center mb-4">
-                        <svg class="w-5 h-5 text-amber-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                            fill="currentColor" viewBox="0 0 22 20" *ngFor="let item of [].constructor(star)">
-                            <path
-                                d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                        </svg>
-
-                        <svg class="w-5 h-5 text-gray-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                            fill="currentColor" viewBox="0 0 22 20" *ngFor="let item of [].constructor(5-star)">
-                            <path
-                                d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                        </svg>
-                        <span class="ml-2 text-gray-600">4.0</span>
+                    <div class="my-8 text-justify">
+                        {{resource.description ? resource.description : resource.features}}
                     </div>
 
-                    <div class="mb-4">
-                        <h3 class="text-lg font-semibold mb-2">Key Features:</h3>
-                        <ul class="list-disc list-inside text-gray-700 space-y-1">
-                            <li>Ocean View</li>
-                            <li>King-Size Bed</li>
-                            <li>En-Suite Bathroom with Luxury Toiletries</li>
-                            <li>Air Conditioning for Personalized Comfort</li>
-                            <li>Complimentary High-Speed Wi-Fi</li>
-                            <li>Well-Stocked Mini Bar</li>
-                            <li>Large Flat-Screen TV with Streaming Services</li>
-                            <li>Dedicated Workspace with Charging Ports</li>
-                        </ul>
-                    </div>
-
-                    <mat-form-field appearance="fill" class="md:w-80 w-full mb-4">
-                        <mat-label class="text-sm">Enter a date range</mat-label>
+                    <!-- Date Range Picker -->
+                    <mat-form-field appearance="fill" class="w-full mb-4">
+                        <mat-label>Enter a date range</mat-label>
                         <mat-date-range-input [rangePicker]="picker">
-                            <input matStartDate placeholder="Start date"
-                                class="p-2 rounded-md border border-gray-300 bg-white dark:bg-gray-700 
-                                focus:border-blue-500 focus:ring focus:ring-blue-300 dark:focus:ring-blue-700 w-full" />
-                            <input matEndDate placeholder="End date"
-                                class="p-2 rounded-md border border-gray-300 bg-white dark:bg-gray-700 
-                                focus:border-blue-500 focus:ring focus:ring-blue-300 dark:focus:ring-blue-700 w-full" />
+                            <input matStartDate placeholder="Start date" [(ngModel)]="dateRange.startDate"/>
+                            <input matEndDate placeholder="End date" [(ngModel)]="dateRange.endDate"/>
                         </mat-date-range-input>
-                        <mat-hint class="text-gray-500 text-xs">MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                        <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
                         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-date-range-picker #picker></mat-date-range-picker>
                     </mat-form-field>
 
-                    <button
-                        class="bg-blue-600 flex gap-2 items-center text-white px-6 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200"
-                        (click)="isAvailable? book() : checkAvailability()"
-                        >
-                        {{isAvailable? "Book Now" : "Check Availability"}}
-                    </button>
-
-                    
-                    
+                    <!-- Action Buttons -->
+                    <div class="flex gap-4">
+                        <button
+                            class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition duration-200"
+                            (click)="isAvailable ? book() : checkAvailability()">
+                            {{isAvailable ? "Book Now" : "Check Availability"}}
+                        </button>
+                        <button
+                            class="text-gray-600 px-6 py-2 rounded-md border border-gray-300 hover:bg-gray-100 transition duration-200"
+                            (click)="closePopup()">
+                            Close
+                        </button>
+                    </div>
                 </div>
+            </div>
+
+            <!-- Key Features -->
+            <div class="p-6">
+                <h3 class="text-lg font-semibold mb-3 text-gray-800">Key Features:</h3>
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead>
+                        <tr>
+                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-500 uppercase">Feature</th>
+                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-500 uppercase">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let feature of resourceFeaturesNames; let i = index">
+                            <td class="px-4 py-3 text-gray-700">{{ feature }}</td>
+                            <td class="px-4 py-3 text-gray-600">{{ resourceFeaturesValues[i] }}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

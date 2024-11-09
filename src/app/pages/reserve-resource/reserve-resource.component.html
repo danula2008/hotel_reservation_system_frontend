@@ -1,7 +1,7 @@
 <section class="sm:mt-10 mt-0 flex flex-col md:block">
     <ol class="overflow-hidden hidden space-y-0 sm:flex space-x-8">
         <li class="relative flex-1 after:content-['']" [class.active]="0 === activeStep">
-            <a class="flex items-center font-medium w-full" (click)="goToStep(0)">
+            <a class="flex items-center font-medium w-full">
                 <span [ngClass]="{
             'bg-blue-700 text-white': 0 < activeStep,
             'bg-gray-50 text-gray-500': 0 > activeStep,
@@ -19,7 +19,7 @@
         </li>
 
         <li class="relative flex-1" [class.active]="1 === activeStep">
-            <a class="flex items-center font-medium w-full" (click)="goToStep(1)">
+            <a class="flex items-center font-medium w-full">
                 <span [ngClass]="{
                 'bg-blue-700 text-white': 1 < activeStep,
                 'bg-gray-50 text-gray-500': 1 > activeStep,
@@ -39,7 +39,7 @@
 
 
         <li class="relative flex-1" [class.active]="2 === activeStep">
-            <a class="flex items-center font-medium w-full" (click)="goToStep(2)">
+            <a class="flex items-center font-medium w-full">
                 <span [ngClass]="{
                 'bg-blue-700 text-white': 2 < activeStep,
                 'bg-gray-50 text-gray-500': 2 > activeStep,
@@ -58,7 +58,7 @@
         </li>
 
         <li class="relative flex-1" [class.active]="3 === activeStep">
-            <a class="flex items-center font-medium w-full" (click)="goToStep(3)">
+            <a class="flex items-center font-medium w-full">
                 <span [ngClass]="{
                 'bg-blue-700 text-white': 3 < activeStep,
                 'bg-gray-50 text-gray-500': 3 > activeStep,
@@ -86,16 +86,18 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div class="flex flex-col items-center">
                     <img src="https://via.placeholder.com/300" alt="Room Image" class="rounded-lg shadow-lg mb-4">
-                    <h3 class="text-lg font-bold">Podo Wae</h3>
-                    <p class="text-gray-500">Madiun, Indonesia</p>
-                    <p class="text-blue-900 font-semibold text-lg">$480 USD <span class="text-gray-500 text-sm">per 2
-                            nights</span></p>
+                    <h3 class="text-lg font-bold">{{resourceDetails.name}}</h3>
+                    <p class="text-gray-500">{{resourceDetails.description}}</p>
+                    <p class="text-blue-900 font-semibold text-lg">Rs. {{resourceDetails.price}} <span
+                            class="text-gray-700 text-sm">per day.</span></p>
+                    <p class="text-blue-900 font-semibold text-lg">Rs. {{resourceDetails.price*noDays}} <span
+                            class="text-gray-700 text-sm">for {{noDays}} days.</span></p>
                 </div>
 
                 <div class="space-y-6">
                     <div>
                         <label class="block text-gray-700 font-medium">Number of Members</label>
-                        <input type="text" placeholder="Please type here ..."
+                        <input [(ngModel)]="noMembers" type="number" placeholder="Please type here ..."
                             class="w-full mt-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
 
@@ -103,29 +105,35 @@
                         <label class="block text-gray-700 font-medium mb-2">Accommodation Type</label>
                         <div class="space-y-4">
                             <label class="flex items-center space-x-2">
-                                <input type="radio" name="accommodation" class="form-radio text-blue-600" checked>
+                                <input type="radio" name="accommodation" [(ngModel)]="accommodationTypeRoom"
+                                    value="Room Only" class="form-radio text-blue-600">
                                 <span>Room Only</span>
                             </label>
+
                             <label class="flex items-center space-x-2">
-                                <input type="radio" name="accommodation" class="form-radio text-blue-600">
+                                <input type="radio" name="accommodation" [(ngModel)]="accommodationTypeRoom"
+                                    value="Bed and Breakfast" class="form-radio text-blue-600">
                                 <span>Bed and Breakfast <span class="text-gray-400 text-sm">(Overnight accommodation
-                                        that
-                                        includes breakfast)</span></span>
+                                        that includes breakfast)</span></span>
                             </label>
+
                             <label class="flex items-center space-x-2">
-                                <input type="radio" name="accommodation" class="form-radio text-blue-600">
+                                <input type="radio" name="accommodation" [(ngModel)]="accommodationTypeRoom"
+                                    value="Half Board" class="form-radio text-blue-600">
                                 <span>Half Board <span class="text-gray-400 text-sm">(Accommodation that includes
-                                        breakfast
-                                        and dinner)</span></span>
+                                        breakfast and dinner)</span></span>
                             </label>
+
                             <label class="flex items-center space-x-2">
-                                <input type="radio" name="accommodation" class="form-radio text-blue-600">
+                                <input type="radio" name="accommodation" [(ngModel)]="accommodationTypeRoom"
+                                    value="Full Board" class="form-radio text-blue-600">
                                 <span>Full Board <span class="text-gray-400 text-sm">(Accommodation that includes
-                                        breakfast,
-                                        lunch, and dinner)</span></span>
+                                        breakfast, lunch, and dinner)</span></span>
                             </label>
+
                             <label class="flex items-center space-x-2">
-                                <input type="radio" name="accommodation" class="form-radio text-blue-600">
+                                <input type="radio" name="accommodation" [(ngModel)]="accommodationTypeRoom"
+                                    value="All Inclusive" class="form-radio text-blue-600">
                                 <span>All Inclusive <span class="text-gray-400 text-sm">(Accommodation that covers all
                                         meals, snacks, and drinks)</span></span>
                             </label>
@@ -139,7 +147,7 @@
                     class="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg shadow-sm hover:bg-gray-300 flex justify-center items-center gap-1">
                     Cancel
                 </button>
-                <button (click)="nextStep()"
+                <button (click)="nextStep()" *ngIf="validateStep1()"
                     class="px-8 py-2 bg-blue-600 text-white rounded-lg shadow-sm hover:bg-blue-700 flex justify-center items-center gap-1">
                     Next
                     <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="white" viewBox="0 0 16 16">
@@ -155,11 +163,10 @@
             <h2 class="text-3xl font-semibold text-center text-blue-700">Do you have any special requests?</h2>
             <p class="text-center text-gray-500 mb-8">Please fill up if you want us to do anything special for you.</p>
 
-            <form>
-                <textarea
-                    class="w-full h-32 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="If no, leave this blank."></textarea>
-            </form>
+            <textarea [(ngModel)]="specialRequests"
+                class="w-full h-32 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="If no, leave this blank."></textarea>
+
             <div class="flex justify-between w-full mt-10">
                 <button (click)="previousStep()"
                     class="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg shadow-sm hover:bg-gray-300 flex justify-center items-center gap-1">
@@ -183,8 +190,8 @@
 
         <div class="max-w-5xl mx-auto p-8 bg-white rounded-lg flex flex-col items-center py-10"
             *ngIf="2 === activeStep">
-            <h2 class="text-3xl font-semibold text-center text-blue-700">Approximate Payment</h2>
-            <p class="text-center text-gray-500 mb-8">Please find a axproximate bill bellow.</p>
+            <h2 class="text-3xl font-semibold text-center text-blue-700">Reservation Summary</h2>
+            <p class="text-center text-gray-500 mb-8">Please find the summary bellow.</p>
             <div
                 class="grid grid-cols-1 md:grid-cols-2 gap-6 border border-gray-300 p-6 rounded-lg bg-gray-50 shadow-md">
                 <!-- Left Column -->
@@ -192,44 +199,45 @@
                     <h3 class="text-lg font-semibold text-blue-700 mb-2">Booking Details</h3>
                     <p class="flex justify-between">
                         <span class="font-medium text-gray-700">Check-in Date:</span>
-                        <span class="text-gray-900">20th January 2024</span>
+                        <span class="text-gray-900">{{queryParams.start}}</span>
                     </p>
                     <p class="flex justify-between">
                         <span class="font-medium text-gray-700">Check-out Date:</span>
-                        <span class="text-gray-900">22nd January 2024</span>
+                        <span class="text-gray-900">{{queryParams.end}}</span>
                     </p>
                     <p class="flex justify-between">
                         <span class="font-medium text-gray-700">Number of Members:</span>
-                        <span class="text-gray-900">10 members</span>
+                        <span class="text-gray-900">{{noMembers}} member(s)</span>
                     </p>
                     <p class="flex justify-between">
                         <span class="font-medium text-gray-700">Meal Plan:</span>
-                        <span class="text-gray-900">Room Only</span>
+                        <span class="text-gray-900">{{accommodationTypeRoom}}</span>
                     </p>
                     <p class="flex justify-between">
                         <span class="font-medium text-gray-700">Special Request:</span>
-                        <span class="text-gray-900">No requests</span>
+                        <span class="text-gray-900">{{specialRequests === ''? "No Requests" : specialRequests}}</span>
                     </p>
                 </div>
 
                 <!-- Right Column -->
                 <div class="space-y-4 border-l border-gray-200 pl-6">
                     <h3 class="text-lg font-semibold text-blue-700 mb-2">Billing Summary</h3>
-                    <p class="flex justify-between">
-                        <span class="font-medium text-gray-700">Room Rate (per night):</span>
-                        <span class="text-gray-900">$480 USD</span>
+                    <p class="justify-between">
+                        <span class="font-medium text-gray-700">Room rate per day:</span>
+                        <span class="text-gray-900 block">Rs. {{resourceDetails.price}}</span>
                     </p>
-                    <p class="flex justify-between">
-                        <span class="font-medium text-gray-700">Total for Meals:</span>
-                        <span class="text-gray-900">$480 USD</span>
+                    <p class="justify-between">
+                        <span class="font-medium text-gray-700">Room rate for {{noDays}} day(s):</span>
+                        <span class="text-gray-900 block">Rs. {{resourceDetails.price*noDays}}</span>
                     </p>
-                    <p class="flex justify-between">
-                        <span class="font-medium text-gray-700">Tax:</span>
-                        <span class="text-gray-900">10%</span>
+                    <p class="justify-between">
+                        <span class="font-medium text-gray-700">Please note that food charges, taxes,<br>
+                            and any additional fees are<br>
+                            <b>not</b> included in this total.</span>
                     </p>
                     <p class="border-t border-gray-300 pt-4 flex justify-between text-lg font-semibold">
                         <span class="text-blue-700">Total Bill:</span>
-                        <span class="text-blue-900">$480 USD</span>
+                        <span class="text-blue-900">Rs. {{resourceDetails.price*noDays}}</span>
                     </p>
                 </div>
             </div>
