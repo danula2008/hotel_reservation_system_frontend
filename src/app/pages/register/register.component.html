@@ -1,0 +1,206 @@
+<div class="w-full">
+    <div class="min-h-screen flex flex-col items-center justify-center py-6">
+        <div class="grid md:grid-cols-2 items-center gap-4 max-w-8xl">
+            <div class="lg:h-[400px] md:h-[300px] max-md:mt-8">
+                <img src="https://readymadeui.com/login-image.webp"
+                    class="w-full h-full max-md:w-4/5 mx-auto block object-cover" alt="Dining Experience" />
+            </div>
+            <div
+                class="border border-gray-300 rounded-lg p-6 max-w-lg shadow-[0_2px_22px_-4px_rgba(93,96,127,0.2)] max-md:mx-auto w-full">
+                <div class="space-y-4">
+                    <div class="mb-8">
+                        <h3 class="text-gray-800 text-3xl font-extrabold">Register</h3>
+                    </div>
+
+                    <section *ngIf="step === 1">
+                        <div class="block sm:flex gap-5">
+                            <div class="w-full sm:w-1/2">
+                                <label class="text-gray-800 text-sm mb-2 block font-semibold" for="firstName">First Name</label>
+                                <input name="firstName" type="text" required [(ngModel)]="user.firstName"
+                                    class="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600"
+                                    placeholder="Enter first name" [ngClass]="fName_error? '' : 'mb-5'"
+                                    (ngModelChange)="fNameValidate()" />
+                                <div *ngIf="fName_error" class="text-red-500 text-xs mt-1 mb-5">
+                                    {{fName_error}}
+                                </div>
+                            </div>
+
+                            <div class="w-full sm:w-1/2">
+                                <label class="text-gray-800 text-sm mb-2 block font-semibold" for="lastName">Last Name</label>
+                                <input name="lastName" type="text" required [(ngModel)]="user.lastName"
+                                    class="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600"
+                                    placeholder="Enter last name" [ngClass]="lName_error? '' : 'mb-5'"
+                                    (ngModelChange)="lNameValidate()" />
+                                <div *ngIf="lName_error" class="text-red-500 text-xs mt-1 mb-5">
+                                    {{lName_error}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="block sm:flex gap-5">
+                            <div class="w-full sm:w-1/2">
+                                <label class="text-gray-800 text-sm mb-2 block font-semibold" for="gender">Gender</label>
+                                <select name="gender" required [(ngModel)]="user.gender"
+                                    class="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600"
+                                    [ngClass]="gender_error? '' : 'mb-5'" (ngModelChange)="genderValidate()">
+                                    <option value="null" disabled>Select gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                                <div *ngIf="gender_error" class="text-red-500 text-xs mt-1 mb-5">
+                                    {{gender_error}}
+                                </div>
+                            </div>
+
+                            <div class="w-full sm:w-1/2">
+                                <label class="text-gray-800 text-sm mb-2 block font-semibold" for="dob">Date of Birth</label>
+                                <input name="dob" type="date" required [(ngModel)]="user.dateOfBirth"
+                                    class="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600"
+                                    [ngClass]="dob_error? '' : 'mb-5'" placeholder="Enter date of birth"
+                                    (ngModelChange)="dobValidate()" 
+                                    [attr.max]="today"
+                                    />
+                                <div *ngIf="dob_error" class="text-red-500 text-xs mt-1 mb-5">
+                                    {{dob_error}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="block sm:flex gap-5">
+                            <div class="w-full sm:w-1/2">
+                                <label class="text-gray-800 text-sm mb-2 block font-semibold" for="contactNumber">Contact
+                                    Number</label>
+                                <input name="contactNumber" type="text" required [(ngModel)]="user.contact"
+                                    class="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600"
+                                    placeholder="Enter contact (country code)" [ngClass]="contact_error? '' : 'mb-5'"
+                                    (ngModelChange)="contactValidate()" />
+                                <div *ngIf="contact_error" class="text-red-500 text-xs mt-1 mb-5">
+                                    {{contact_error}}
+                                </div>
+                            </div>
+
+                            <div class="w-full sm:w-1/2">
+                                <label class="text-gray-800 text-sm mb-2 block font-semibold" for="country">Country</label>
+                                <select name="country" type="text" required [(ngModel)]="user.country"
+                                    class="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600"
+                                    placeholder="Enter country" [ngClass]="country_error? '' : 'mb-5'">
+                                    <option value="null" disabled>Select country</option>
+                                    <option *ngFor="let country of countriesRegions" [value]="country">{{country}}
+                                    </option>
+                                </select>
+
+                                <div *ngIf="country_error" class="text-red-500 text-xs mt-1 mb-5">
+                                    {{country_error}}
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+
+
+                    <section *ngIf="step === 2">
+                        <div class="w-full">
+                            <label class="text-gray-800 text-sm mb-2 block font-semibold" for="username">Username</label>
+                            <input name="username" type="text" required [(ngModel)]="user.username"
+                                class="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600"
+                                placeholder="Enter username" [ngClass]="username_error? '' : 'mb-5'"
+                                (ngModelChange)="usernameValidate()" />
+                            <div *ngIf="username_error" class="text-red-500 text-xs mt-1 mb-5">
+                                {{username_error}}
+                            </div>
+                        </div>
+
+                        <div class="w-full">
+                            <label class="text-gray-800 text-sm mb-2 block font-semibold" for="email">Email</label>
+                            <input name="email" type="email" required [(ngModel)]="user.email"
+                                class="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600"
+                                placeholder="Enter email" [ngClass]="email_error? '' : 'mb-5'"
+                                (ngModelChange)="emailValidate()" />
+                            <div *ngIf="email_error" class="text-red-500 text-xs mt-1 mb-5">
+                                {{email_error}}
+                            </div>
+                        </div>
+
+                        <div class="relative w-full">
+                            <label class="text-gray-800 text-sm mb-2 block font-semibold" for="password">Password</label>
+                            <input name="password" [type]="showPassword ? 'text' : 'password'" required
+                                [(ngModel)]="user.password"
+                                class="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600"
+                                placeholder="Enter password" [ngClass]="password_error ? 'mb-0' : 'mb-5'"
+                                (ngModelChange)="passwordValidate()" />
+
+                            <button type="button"
+                                class="absolute right-4 top-[35px] transform cursor-pointer p-1 bg-transparent focus:outline-none"
+                                (click)="toggleShowPassword()">
+                                <svg *ngIf="!showPassword" class="w-6 h-6 text-gray-800 dark:text-white"
+                                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    fill="none" viewBox="0 0 24 24">
+                                    <path stroke="#bbb" stroke-width="2"
+                                        d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
+                                    <path stroke="#bbb" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                </svg>
+                                <svg *ngIf="showPassword" class="w-6 h-6 text-gray-800 dark:text-white"
+                                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    fill="none" viewBox="0 0 24 24">
+                                    <path stroke="#bbb" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                </svg>
+                            </button>
+
+                            <div *ngIf="password_error" class="text-red-500 text-xs mt-1 mb-5">
+                                {{ password_error }}
+                            </div>
+                        </div>
+
+
+                        <div class="relative w-full">
+                            <label class="text-gray-800 text-sm mb-2 block font-semibold" for="cfrm_password">Confirm Password</label>
+                            <input name="cfrm_password" [type]="showConfirmPassword ? 'text' : 'password'" required
+                                [(ngModel)]="user.confirmPassword"
+                                class="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600"
+                                placeholder="Enter Confirm password" [ngClass]="confirmPassword_error ? 'mb-0' : 'mb-5'"
+                                (ngModelChange)="confirmPasswordValidate()" />
+
+                            <button type="button"
+                                class="absolute right-4 top-[35px] transform cursor-pointer p-1 bg-transparent focus:outline-none"
+                                (click)="toggleShowConfirmPassword()">
+                                <svg *ngIf="!showConfirmPassword" class="w-6 h-6 text-gray-800 dark:text-white"
+                                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    fill="none" viewBox="0 0 24 24">
+                                    <path stroke="#bbb" stroke-width="2"
+                                        d="M21 12c0 1.2-4.03 6-9 6s-9-4.8-9-6c0-1.2 4.03-6 9-6s9 4.8 9 6Z" />
+                                    <path stroke="#bbb" stroke-width="2" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                </svg>
+                                <svg *ngIf="showConfirmPassword" class="w-6 h-6 text-gray-800 dark:text-white"
+                                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    fill="none" viewBox="0 0 24 24">
+                                    <path stroke="#bbb" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3.933 13.909A4.357 4.357 0 0 1 3 12c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 21 12c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M5 19 19 5m-4 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                </svg>
+                            </button>
+
+                            <div *ngIf="confirmPassword_error" class="text-red-500 text-xs mt-1 mb-5">
+                                {{ confirmPassword_error }}
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="!mt-8 flex gap-5">
+                        <button type="button" *ngIf="step===2" (click)="toStep(1)"
+                            class="w-full font-bold shadow-xl py-3 px-4 text-md tracking-wide rounded-lg text-gray-600 border-blue-600 border-2 hover:bg-blue-100 focus:outline-none">
+                            Back
+                        </button>
+                        <button type="button" (click)="step ===1? toStep(2) : register()" [disabled]="validateStep1()" [ngClass]="validateStep1()? 'cursor-not-allowed' : 'cursor-pointer hover:bg-blue-700'"
+                            class="w-full font-bold shadow-xl py-3 px-4 text-md tracking-wide rounded-lg text-white bg-blue-600 focus:outline-none">
+                            {{step ===1? 'Next' : 'Register'}}
+                        </button>
+                    </div>
+
+                    <p class="text-sm !mt-8 text-center text-gray-800">Have an account? <a routerLink="/login"
+                            class="text-blue-600 hover:underline ml-1 whitespace-nowrap">Log In here</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

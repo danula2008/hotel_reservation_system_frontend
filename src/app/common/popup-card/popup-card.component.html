@@ -16,17 +16,10 @@
                     <!-- Main Image with Close Button on Top -->
                     <div
                         class="relative group w-full max-w-md max-h-80 h-auto overflow-hidden rounded-lg shadow-lg mb-4">
-                        <img src="{{selectedSrc}}" alt="Product"
+                        <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/529992676.jpg?k=f62c521c45cf09ba84af2e5c92da714e613781c96a52c49a8df86b47e7222d11&o=&hp=1"
+                            alt="Product"
                             class="w-full h-full object-cover rounded-lg transition-transform duration-300 group-hover:scale-105"
                             id="mainImage">
-                    </div>
-
-                    <!-- Thumbnail Scrolling Container with selected thumbnail highlight -->
-                    <div class="flex gap-3 overflow-x-auto py-4 max-w-full justify-center">
-                        <img *ngFor="let img of imgAr" src="{{img}}" [class.opacity-100]="img === selectedSrc"
-                            [class.opacity-60]="img !== selectedSrc" [class.border-2]="img === selectedSrc"
-                            class="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-lg cursor-pointer transition-all duration-300 hover:opacity-100 border-blue-600"
-                            (click)="changeImage(img)">
                     </div>
                 </div>
 
@@ -34,7 +27,7 @@
                 <div class="w-full md:w-1/2 p-6">
                     <h2 class="text-2xl sm:text-3xl font-semibold mb-3 text-gray-800">{{resource.name}}</h2>
                     <p class="text-gray-500 mb-2">Room Code: {{resource.id}}</p>
-                    <span class="text-xl sm:text-2xl font-semibold text-blue-600 mb-4 block">Rs.
+                    <span class="text-xl sm:text-2xl font-semibold text-blue-600 mb-2 block">Rs.
                         {{resource.price}}</span>
 
                     <!-- Rating -->
@@ -56,16 +49,11 @@
                         <span class="ml-2 text-gray-600">{{resource.rating}}.0</span>
                     </div>
 
-                    <div class="my-8 text-justify">
-                        {{resource.description ? resource.description : resource.features}}
-                    </div>
-
-                    <!-- Date Range Picker -->
-                    <mat-form-field appearance="fill" class="w-full mb-4">
+                    <mat-form-field appearance="fill" class="w-full my-4">
                         <mat-label>Enter a date range</mat-label>
                         <mat-date-range-input [rangePicker]="picker">
-                            <input matStartDate placeholder="Start date" [(ngModel)]="dateRange.startDate"/>
-                            <input matEndDate placeholder="End date" [(ngModel)]="dateRange.endDate"/>
+                            <input matStartDate placeholder="Start date" [(ngModel)]="dateRange.startDate" />
+                            <input matEndDate placeholder="End date" [(ngModel)]="dateRange.endDate" />
                         </mat-date-range-input>
                         <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
                         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
@@ -86,6 +74,10 @@
                         </button>
                     </div>
                 </div>
+            </div>
+
+            <div class="ml-6">
+                {{resource.description ? resource.description : resource.features}}
             </div>
 
             <!-- Key Features -->

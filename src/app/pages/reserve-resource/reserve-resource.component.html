@@ -87,8 +87,7 @@
                 <div class="flex flex-col items-center">
                     <img src="https://via.placeholder.com/300" alt="Room Image" class="rounded-lg shadow-lg mb-4">
                     <h3 class="text-lg font-bold">{{resourceDetails.name}}</h3>
-                    <p class="text-gray-500">{{resourceDetails.description}}</p>
-                    <p class="text-blue-900 font-semibold text-lg">Rs. {{resourceDetails.price}} <span
+                    <p class="text-blue-900 font-semibold text-lg mt-3">Rs. {{resourceDetails.price}} <span
                             class="text-gray-700 text-sm">per day.</span></p>
                     <p class="text-blue-900 font-semibold text-lg">Rs. {{resourceDetails.price*noDays}} <span
                             class="text-gray-700 text-sm">for {{noDays}} days.</span></p>
@@ -245,7 +244,7 @@
 
             <div class="text-center mt-5">
                 <button class="px-10 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-md my-5"
-                    (click)="nextStep()">
+                    (click)="nextStep(); placeReservation()">
                     Place Reservation
                 </button>
             </div>

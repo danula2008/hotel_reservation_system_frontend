@@ -19,13 +19,30 @@ import { HttpClient } from '@angular/common/http';
     MatFormFieldModule,
     MatInputModule,
     CommonModule,
-    // routerLink
   ],
   templateUrl: './reserve-resource.component.html'
 })
-export class ReserveResourceComponent implements OnInit {
+export class ReserveResourceComponent {
   constructor(private route: ActivatedRoute, private http: HttpClient) {
-    this.setTempResourceDetails()
+    this.queryParams = this.route.snapshot.queryParams;
+
+    this.resourceType = this.queryParams.id.startsWith("R")
+      ? "Room"
+      : this.queryParams.id.startsWith("H")
+        ? "Hall"
+        : "Dop"
+
+    this.noDays = (new Date(this.queryParams.end).getTime() - new Date(this.queryParams.start).getTime()) / (1000 * 60 * 60 * 24);
+    this.loadResourceFunctionCaller();
+    
+  }
+
+  async loadResourceFunctionCaller(){
+    await this.loadResource()
+  }
+
+  async loadResource(){
+    this.http.get(`http://localhost:8080/${this.resourceType.toLowerCase()}/get/id/${this.queryParams.id}`).subscribe(data => this.resourceDetails = data)
   }
 
   queryParams: any;
@@ -37,19 +54,6 @@ export class ReserveResourceComponent implements OnInit {
   noMembers = null
   accommodationTypeRoom = ''
   specialRequests = ''
-
-  ngOnInit(): void {
-    this.queryParams = this.route.snapshot.queryParams;
-
-    this.resourceType = this.queryParams.id.startsWith("R")
-      ? "Room"
-      : this.queryParams.id.startsWith("H")
-        ? "Hall"
-        : "Dop"
-
-        this.noDays = (new Date(this.queryParams.end).getTime() - new Date(this.queryParams.start).getTime()) / (1000 * 60 * 60 * 24);
-    // this.http.get(`http://localhost:8080/get/${this.resourceType.toLowerCase()}/${this.queryParams.id}`).subscribe(data => this.resourceDetails = data)
-  }
 
   activeStep = 0;
   nextStep(): void {
@@ -64,27 +68,25 @@ export class ReserveResourceComponent implements OnInit {
     }
   }
 
-  setTempResourceDetails() {
-    this.resourceDetails = {
-      "id": "R001",
-      "type": "Sea View",
-      "name": "Ocean Breeze Suite",
-      "capacity": 2,
-      "features": "Private Balcony, Air Conditioning, Mini Bar, Ocean View",
-      "price": 250.0,
-      "bedType": "King Bed",
-      "view": "Sea View",
-      "internetAccess": true,
-      "television": true,
-      "image": null,
-      "rating": 4,
-      "available": false
-    }
-  }
-
   validateStep1(): boolean {
     const isValidNoMembers = this.noMembers !== null && /^\d+$/.test(this.noMembers) && Number(this.noMembers) > 0;
     const isAccommodationTypeRoom = typeof this.resourceType === 'string' && this.resourceType === 'Room' && this.accommodationTypeRoom != '';
     return isValidNoMembers && isAccommodationTypeRoom;
-}
+  }
+
+  placeReservation(){
+    // let reservationDetails = {
+    //   "id": "string",
+    //   "customerId": localStorage.getItem('customerId'),
+    //   "totPrice": 0,
+    //   "status": "Booked",
+    //   "noMembers": this.noMembers,
+    //   "paymentCompleted": false,
+    //   "createdDate": new Date().toISOString().split('T')[0],
+    //   "createdTime": new Date().toTimeString().slice(0, 8),
+    //   "specialRequests": this.specialRequests
+    // }
+
+    // this.http.post("http://localhost:8080/reservation/add", reservationDetails).subscribe(data => )
+  }
 }

@@ -4,6 +4,8 @@ import { ExploreComponent } from './pages/explore/explore.component';
 import { ReserveResourceComponent } from './pages/reserve-resource/reserve-resource.component';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 import { ViewUsersReservationsComponent } from './pages/view-users-reservations/view-users-reservations.component';
+import { LoginComponent } from './pages/login/login.component';
+import { RegisterComponent } from './pages/register/register.component';
 
 export const routes: Routes = [
     {
@@ -21,5 +23,11 @@ export const routes: Routes = [
     }, {
         path: "reservations",
         component: ViewUsersReservationsComponent
+    }, {
+        path: "login",
+        component: LoginComponent
+    }, {
+        path: "register",
+        component: RegisterComponent
     }
 ];
