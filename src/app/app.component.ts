@@ -5,12 +5,12 @@ import { FooterComponent } from "./common/footer/footer.component";
 import { OnInit } from '@angular/core';
 import { initFlowbite } from 'flowbite';
 import { Router } from '@angular/router';
-import { NgIf } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent, FooterComponent, NgIf],
+  imports: [RouterOutlet, HeaderComponent, FooterComponent, NgIf, NgClass],
   templateUrl: './app.component.html',
 })
 export class AppComponent implements OnInit {
@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
 
     this.router.events.subscribe(() => {
       const currentUrl = this.router.url;
-      this.showFullLayout = !(currentUrl === '/login' || currentUrl === '/register');
+      this.showFullLayout = !(currentUrl === '/login' || currentUrl === '/register' || currentUrl.includes('/admin'));
     });
   }
 }

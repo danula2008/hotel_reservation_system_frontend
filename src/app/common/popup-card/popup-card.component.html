@@ -49,7 +49,7 @@
                         <span class="ml-2 text-gray-600">{{resource.rating}}.0</span>
                     </div>
 
-                    <mat-form-field appearance="fill" class="w-full my-4">
+                    <mat-form-field appearance="fill" class="w-full my-4" *ngIf="!adminView">
                         <mat-label>Enter a date range</mat-label>
                         <mat-date-range-input [rangePicker]="picker">
                             <input matStartDate placeholder="Start date" [(ngModel)]="dateRange.startDate" />
@@ -62,13 +62,14 @@
 
                     <!-- Action Buttons -->
                     <div class="flex gap-4">
-                        <button
+                        <button *ngIf="!adminView"
                             class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition duration-200"
                             (click)="isAvailable ? book() : checkAvailability()">
                             {{isAvailable ? "Book Now" : "Check Availability"}}
                         </button>
                         <button
-                            class="text-gray-600 px-6 py-2 rounded-md border border-gray-300 hover:bg-gray-100 transition duration-200"
+                            [ngClass]="adminView? 'mt-5 bg-blue-600 text-white px-6 py-2 hover:bg-blue-700' : 'text-gray-600 px-6 py-2 border border-gray-300 hover:bg-gray-100'"
+                            class="transition duration-200 rounded-md"
                             (click)="closePopup()">
                             Close
                         </button>

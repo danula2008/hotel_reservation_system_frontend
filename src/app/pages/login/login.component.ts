@@ -2,6 +2,7 @@ import { NgIf } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
+import { User } from '../../model/User';
 
 @Component({
   selector: 'app-login',
@@ -24,9 +25,6 @@ export class LoginComponent {
   }
 
   async checkUsernamePassword() {
-    localStorage.setItem('userId', 'U001')
-    this.router.navigate([''])
-
     let type = ''
     if (/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(this.usernameOrEmail)) {
       type = 'email'
@@ -34,13 +32,24 @@ export class LoginComponent {
       type = 'username'
     }
 
-    this.http.get(`http://localhost:8080/user/validate-login/?${encodeURIComponent(type)}=${encodeURIComponent(this.usernameOrEmail)}&password=${encodeURIComponent(this.password)}`).subscribe(data => {
-      if (data.toString() !== 'Invalid') {
-        localStorage.setItem('userId', data.toString())
-        this.router.navigate([''])
-      } else {
-        this.invalidLogin = true
-      }
-    })
+    localStorage.setItem('user', JSON.stringify(new User(
+      '12345',
+      'johndoe',
+      '',
+      'John Doe',
+      'johndoe@example.com',
+      'Admin',
+      new Date('2023-01-01T00:00:00Z'),
+      new Date()
+    )));
+
+    // this.http.get<User>(`http://localhost:8080/user/validate-login/?${encodeURIComponent(type)}=${encodeURIComponent(this.usernameOrEmail)}&password=${encodeURIComponent(this.password)}`).subscribe(data => {
+    //   if (data.toString() !== 'Invalid') {
+    //     localStorage.setItem('userId', data.toString())
+    //     this.router.navigate([''])
+    //   } else {
+    //     this.invalidLogin = true
+    //   }
+    // })
   }
 }

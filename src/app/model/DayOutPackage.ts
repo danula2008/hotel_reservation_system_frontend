@@ -1,25 +1,25 @@
 export class DayOutPackage {
-    private id: string;
-    private name: string;
-    private description: string;
-    private duration: string;
-    private unitPrice: number;
-    private inclusion: string;
-    private equipments: string;
-    private ageLimit: string;
-    private timeOfDay: string;
-    private foodDetails: string;
-    private groupSize: string;
-    private image: Blob | null;
-    private rating: number;
-    private available: boolean;
+    id: string;
+    name: string;
+    description: string;
+    duration: string;
+    price: number;
+    inclusion: string;
+    equipments: string;
+    ageLimit: string;
+    timeOfDay: string;
+    foodDetails: string;
+    groupSize: string;
+    image: Blob | null;
+    rating: number;
+    available: boolean;
 
     constructor(
         id: string,
         name: string,
         description: string,
         duration: string,
-        unitPrice: number,
+        price: number,
         inclusion: string,
         equipments: string,
         ageLimit: string,
@@ -34,7 +34,7 @@ export class DayOutPackage {
         this.name = name;
         this.description = description;
         this.duration = duration;
-        this.unitPrice = unitPrice;
+        this.price = price;
         this.inclusion = inclusion;
         this.equipments = equipments;
         this.ageLimit = ageLimit;
@@ -62,8 +62,8 @@ export class DayOutPackage {
         return this.duration;
     }
 
-    public getUnitPrice(): number {
-        return this.unitPrice;
+    public getprice(): number {
+        return this.price;
     }
 
     public getInclusion(): string {

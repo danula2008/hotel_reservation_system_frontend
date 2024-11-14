@@ -1,5 +1,6 @@
 <app-header *ngIf="showFullLayout"></app-header>
-<div class="container mx-auto">
+<div [ngClass]="showFullLayout? 'container mx-auto' : ''">
   <router-outlet></router-outlet>
 </div>
 <app-footer *ngIf="showFullLayout"></app-footer>
+

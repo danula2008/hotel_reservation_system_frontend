@@ -1,0 +1,363 @@
+<div class="relative overflow-x-auto sm:rounded-lg  min-h-[100vh]">
+    <div
+        class="flex flex-col md:flex-row md:items-center justify-between pb-5 bg-white dark:bg-gray-900 rounded-lg shadow-md space-y-6 md:space-y-0 md:space-x-8">
+        <!-- Availability Section -->
+        <div class="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-4">
+            <span class="font-medium text-gray-500 dark:text-gray-300">Availability:</span>
+            <button id="dropdownAvailableButton" data-dropdown-toggle="dropdownAvailable"
+                class="flex items-center text-gray-700 bg-white border border-gray-300 rounded-lg px-4 py-2 shadow-sm focus:outline-none hover:bg-gray-50 focus:ring-2 focus:ring-offset-1 focus:ring-gray-300 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
+                type="button">
+                {{availableFilter}}
+                <svg class="w-4 h-4 ml-2 text-gray-400 dark:text-gray-300" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m1 1 4 4 4-4" />
+                </svg>
+            </button>
+            <!-- Availability Dropdown -->
+            <div id="dropdownAvailable" class="hidden z-20 w-44 bg-white rounded-lg shadow-lg dark:bg-gray-700">
+                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
+                    <li><a (click)="setAvailabilityFilter('All')"
+                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">All</a>
+                    </li>
+                    <li><a (click)="setAvailabilityFilter('Available')"
+                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Available</a>
+                    </li>
+                    <li><a (click)="setAvailabilityFilter('Not Available')"
+                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Not
+                            Available</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Rating Section -->
+        <div class="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-4">
+            <span class="font-medium text-gray-500 dark:text-gray-300">Rating:</span>
+            <button id="dropdownRatingButton" data-dropdown-toggle="dropdownRating"
+                class="flex items-center text-gray-700 bg-white border border-gray-300 rounded-lg px-4 py-2 shadow-sm focus:outline-none hover:bg-gray-50 focus:ring-2 focus:ring-offset-1 focus:ring-gray-300 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
+                type="button">
+                {{ratingFilter}}
+                <svg class="w-4 h-4 ml-2 text-gray-400 dark:text-gray-300" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m1 1 4 4 4-4" />
+                </svg>
+            </button>
+            <!-- Rating Dropdown -->
+            <div id="dropdownRating" class="hidden z-20 w-44 bg-white rounded-lg shadow-lg dark:bg-gray-700">
+                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
+                    <li *ngFor="let star of ['All', 1, 2, 3, 4, 5]">
+                        <a (click)="setRatingFilter(star==='All'? 'All' : star + ' Star')"
+                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{star
+                            === 'All'? 'All' : star + ' Star' }}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Search Input -->
+        <label for="table-search" class="sr-only">Search</label>
+        <div class="relative">
+            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                </svg>
+            </div>
+            <input type="text" id="table-search-users" [(ngModel)]="searchTxt" (ngModelChange)="searchTextFilter()"
+                class="block w-full md:w-72 py-2 pl-10 pr-4 text-sm text-gray-900 border border-gray-300 rounded-lg shadow-sm bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Search day out package by name or ID">
+        </div>
+    </div>
+
+    <table *ngIf="permenentDopList.length !== 0"
+        class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="p-3"
+                    *ngFor="let col of ['Name', 'Description', 'Bed Type', 'Status', 'Price', 'Action']">
+                    {{col}}
+                </th>
+            </tr>
+        </thead>
+        <tbody *ngIf="dopList.length !== 0">
+            <tr (click)="showModel(dop)" *ngFor="let dop of dopList"
+                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                    <img class="w-14 h-10"
+                        src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/529992676.jpg?k=f62c521c45cf09ba84af2e5c92da714e613781c96a52c49a8df86b47e7222d11&o=&hp=1"
+                        alt="Day out package">
+                    <div class="ps-3">
+                        <div class="font-normal text-gray-500">{{dop.id}}</div>
+                        <div class="text-base font-semibold">{{dop.name}}</div>
+                    </div>
+                </th>
+                <td class="px-6 py-4">
+                    {{dop.description}}
+                </td>
+                <td class="px-6 py-4">
+                    {{dop.groupSize}}
+                </td>
+                <td class="px-6 py-4">
+                    <div class="flex items-center">
+                        <div class="h-2.5 w-2.5 rounded-full me-2"
+                            [ngClass]="dop.available? 'bg-green-500' : 'bg-red-500'"></div>{{dop.available?
+                        "Available" : "Not Available"}}
+                    </div>
+                </td>
+                <td class="px-6 py-4">
+                    Rs. {{dop.price}}
+                </td>
+                <td class="centered-td px-6 py-4">
+                    <div class="flex gap-3 justify-center items-center">
+                        <button (click)="editDop(dop); $event.stopPropagation()">
+                            <svg class="w-6 h-6 text-gray-800 dark:text-white hover:scale-[1.05] transition-transform duration-200 ease-in-out transform-gpu"
+                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
+                            </svg>
+                        </button>
+                        <button (click)="deleteDop(dop); $event.stopPropagation()">
+                            <svg class="w-6 h-6 text-gray-800 dark:text-white hover:scale-[1.05] transition-transform duration-200 ease-in-out transform-gpu"
+                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
+                            </svg>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div *ngIf="dopList.length === 0" class="flex justify-center items-center p-8">
+        <h1 class="text-md text-gray-700 mt-5 font-semibol">
+            No items found
+        </h1>
+    </div>
+
+    <div role="status" *ngIf="permenentDopList.length === 0"
+        class="max-w-full p-4 space-y-4 border border-gray-200 divide-y divide-gray-200 rounded shadow animate-pulse dark:divide-gray-700 md:p-6 dark:border-gray-700">
+        <div class="flex items-center justify-between">
+            <div>
+                <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+            </div>
+            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+        </div>
+        <div class="flex items-center justify-between pt-4">
+            <div>
+                <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+            </div>
+            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+        </div>
+        <div class="flex items-center justify-between pt-4">
+            <div>
+                <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+            </div>
+            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+        </div>
+        <div class="flex items-center justify-between pt-4">
+            <div>
+                <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+            </div>
+            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+        </div>
+        <div class="flex items-center justify-between pt-4">
+            <div>
+                <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+            </div>
+            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+        </div>
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+
+<app-popup-card *ngIf="selectedDop" [resource]="selectedDop" (close)="selectedDop = null"
+    [adminView]="true"></app-popup-card>
+
+<div class="fixed bottom-10 right-10">
+    <button data-modal-target="dop-input-modal" data-modal-toggle="dop-input-modal"
+        class="flex items-center bg-blue-700 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-full shadow-lg transition-all duration-300 gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="inline-block"
+            viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+                d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+        </svg>
+        <span class="text-md">Add Day Out Package</span>
+    </button>
+</div>
+
+<div id="dop-input-modal" tabindex="-1" aria-hidden="true"
+    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-2xl max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-800 p-6">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between border-b pb-3 mb-4">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                    Add New Day Out Package
+                </h3>
+                <button type="button"
+                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                    data-modal-toggle="dop-input-modal">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+
+            <!-- Modal body -->
+            <form class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="col-span-2">
+                        <label for="dop-name" class="block text-sm font-medium text-gray-900 dark:text-white">Day Out Package
+                            Name</label>
+                        <input type="text" id="dop-name" name="dop-name"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg p-2.5 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                            placeholder="Ocean View Package" required>
+                    </div>
+
+                    <div>
+                        <label for="rating"
+                            class="block text-sm font-medium text-gray-900 dark:text-white">Rating</label>
+                        <input type="number" id="rating" name="rating" min="1" max="5" step="1.0" id="dop-code"
+                            name="rating"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg p-2.5 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                            placeholder="5.0" required>
+                    </div>
+
+                    <!-- Price -->
+                    <div>
+                        <label for="price" class="block text-sm font-medium text-gray-900 dark:text-white">Price
+                            (Rs.)</label>
+                        <input type="number" id="price" name="price"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg p-2.5 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                            placeholder="150" required>
+                    </div>
+
+                </div>
+
+                <!-- Description -->
+                <div>
+                    <label for="description"
+                        class="block text-sm font-medium text-gray-900 dark:text-white">Description</label>
+                    <textarea id="description" rows="3" name="description"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg p-2.5 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                        placeholder="A cozy dop with stunning views of the ocean, ideal for solo travelers or business trips."
+                        required></textarea>
+                </div>
+
+                <!-- Features -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="type" class="block text-sm font-medium text-gray-900 dark:text-white">Type</label>
+                        <input type="text" id="type" name="type"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg p-2.5 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                            placeholder="Single" required>
+                    </div>
+                    <div>
+                        <label for="capacity"
+                            class="block text-sm font-medium text-gray-900 dark:text-white">Capacity</label>
+                        <input type="number" id="capacity" name="capacity"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg p-2.5 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                            placeholder="1" required>
+                    </div>
+                    <div class="col-span-2">
+                        <label for="features"
+                            class="block text-sm font-medium text-gray-900 dark:text-white">Features</label>
+                        <input type="text" id="features" name="features"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg p-2.5 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                            placeholder="Air conditioning, Mini bar, Coffee maker" required>
+                    </div>
+                    <div>
+                        <label for="bed-type" class="block text-sm font-medium text-gray-900 dark:text-white">Bed
+                            Type</label>
+                        <input type="text" id="bed-type" name="bed-type"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg p-2.5 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                            placeholder="Single" required>
+                    </div>
+                    <div>
+                        <label for="view" class="block text-sm font-medium text-gray-900 dark:text-white">View</label>
+                        <input type="text" id="view" name="view"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg p-2.5 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                            placeholder="Ocean" required>
+                    </div>
+                    <div>
+                        <label for="internet" class="block text-sm font-medium text-gray-900 dark:text-white">Internet
+                            Access</label>
+                        <select id="internet" name="internet"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg p-2.5 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="television"
+                            class="block text-sm font-medium text-gray-900 dark:text-white">Television</label>
+                        <select id="television" name="television"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg p-2.5 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Upload Image Label -->
+                <label for="dropzone-file" class="block text-sm font-medium text-gray-900 dark:text-white">Upload
+                    Image</label>
+
+                <div class="flex items-center justify-center w-full" *ngIf="!imagePreview">
+                    <label for="dropzone-file"
+                        class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                        <div class="flex flex-col items-center justify-center pb-6">
+                            <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                            </svg>
+                            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click
+                                    to upload</span> or drag and drop</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)
+                            </p>
+                        </div>
+                        <input id="dropzone-file" type="file" class="hidden" accept="image/*"
+                            (change)="onFileSelected($event)" />
+                    </label>
+                </div>
+
+                <!-- Image Preview -->
+                <div class="mt-4 mx-auto flex justify-center items-center space-x-4">
+                    <img *ngIf="imagePreview" [src]="imagePreview" alt="Uploaded Image"
+                        class="w-full max-w-xs rounded-lg" />
+                </div>
+
+                <div class="mt-2 mx-auto flex justify-center items-center space-x-4">
+                    <button (click)="removeImage()" *ngIf="imagePreview"
+                        class="px-4 py-2 text-white bg-red-500 rounded-full hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300">
+                        Remove
+                    </button>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit"
+                    class="mt-4 font-bold text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    Add Day Out Package
+                </button>
+            </form>
+        </div>
+    </div>
+</div>F

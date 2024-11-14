@@ -1,17 +1,17 @@
 export class Hall {
-    private id: string;
-    private name: string;
-    private description: string;
-    private type: string;
-    private capacity: number;
-    private price: number;
-    private availEquip: string;
-    private internetAccess: boolean;
-    private climateControl: boolean;
-    private decoratorStyle: string;
-    private image: Blob | null;
-    private rating: number;
-    private available: boolean;
+    id: string;
+    name: string;
+    description: string;
+    type: string;
+    capacity: number;
+    price: number;
+    availEquip: string;
+    internetAccess: boolean;
+    climateControl: boolean;
+    decoratorStyle: string;
+    image: Blob | null;
+    rating: number;
+    available: boolean;
 
     constructor(
         id: string,

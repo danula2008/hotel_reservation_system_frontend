@@ -22,6 +22,7 @@ export class PopupCardComponent implements OnChanges {
   }
 
   @Input() resource: any;
+  @Input() adminView = false;
   @Output() close = new EventEmitter<void>();
 
   isAvailable: boolean = false;

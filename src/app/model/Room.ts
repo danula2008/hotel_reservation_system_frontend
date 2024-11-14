@@ -1,18 +1,18 @@
 export class Room {
-    private id: string;
-    private type: string;
-    private name: string;
-    private description: string;
-    private capacity: number;
-    private features: string;
-    private price: number;
-    private bedType: string;
-    private view: string;
-    private internetAccess: boolean;
-    private television: boolean;
-    private image: Blob | null;
-    private rating: number;
-    private available: boolean;
+    id: string;
+    type: string;
+    name: string;
+    description: string;
+    capacity: number;
+    features: string;
+    price: number;
+    bedType: string;
+    view: string;
+    internetAccess: boolean;
+    television: boolean;
+    image: Blob | null;
+    rating: number;
+    available: boolean;
 
     constructor(
         id: string,
@@ -62,7 +62,7 @@ export class Room {
         return this.description;
     }
 
-    public getCapacity(): number | null {
+    public getCapacity(): number {
         return this.capacity;
     }
 
@@ -94,7 +94,7 @@ export class Room {
         return this.image;
     }
 
-    public getRating(): number | null {
+    public getRating(): number {
         return this.rating;
     }
 

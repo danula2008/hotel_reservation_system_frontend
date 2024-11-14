@@ -15,6 +15,8 @@ export class UserProfileComponent {
 
   constructor(private route: ActivatedRoute, private http: HttpClient) {
     this.callLoadCustomer();
+
+    this.user = localStorage.getItem('user')
   }
 
   customer: any;
@@ -27,12 +29,12 @@ export class UserProfileComponent {
   }
 
   async loadCustomer() {
-    this.http.get(`http://localhost:8080/customer/get/user_id/${this.route.snapshot.queryParams['id']}`).subscribe(data => {
+    this.http.get(`http://localhost:8080/customer/get/user_id/${this.user.id}`).subscribe(data => {
       this.customer = data
       this.userProfileImage = `https://ui-avatars.com/api/?name=${this.customer.fname}+${this.customer.lname}&background=${'male' == 'male' ? '007BFF' : 'FFB6C1'}&color=FFFFFF&size=128&rounded=true&bold=true`
     })
 
-    this.http.get(`http://localhost:8080/user/get/id/${this.route.snapshot.queryParams['id']}`).subscribe(data => {
+    this.http.get(`http://localhost:8080/user/get/id/${this.user.id}`).subscribe(data => {
       this.user = data
     })
   }

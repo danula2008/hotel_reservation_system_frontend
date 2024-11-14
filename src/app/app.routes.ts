@@ -6,6 +6,11 @@ import { UserProfileComponent } from './pages/user-profile/user-profile.componen
 import { ViewUsersReservationsComponent } from './pages/view-users-reservations/view-users-reservations.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { DashboardComponent } from './pages/admin/dashboard/dashboard.component';
+import { ManageRoomsComponent } from '../app/pages/admin/manage-rooms/manage-rooms.component';
+import { OverviewComponent } from '../app/pages/admin/overview/overview.component';
+import { ManageHallsComponent } from './pages/admin/manage-halls/manage-halls.component';
+import { ManageDopComponent } from './pages/admin/manage-dop/manage-dop.component';
 
 export const routes: Routes = [
     {
@@ -29,5 +34,24 @@ export const routes: Routes = [
     }, {
         path: "register",
         component: RegisterComponent
+    }, {
+        path: "admin",
+        component: DashboardComponent,
+        children: [
+            {
+                path: '',
+                component: OverviewComponent
+            },
+            {
+                path: "rooms",
+                component: ManageRoomsComponent
+            }, {
+                path: "halls",
+                component: ManageHallsComponent
+            }, {
+                path: "day-out-packages",
+                component: ManageDopComponent
+            }
+        ]
     }
 ];
