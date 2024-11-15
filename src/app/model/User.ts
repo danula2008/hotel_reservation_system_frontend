@@ -1,12 +1,12 @@
 export class User {
-    private id: string;
-    private username: string;
-    private password: string;
-    private name: string;
-    private email: string;
-    private role: string;
-    private date_created: Date;
-    private last_login: Date;
+    id: string;
+    username: string;
+    password: string;
+    name: string;
+    email: string;
+    role: string;
+    dateCreated: Date;
+    lastLogin: Date;
 
     constructor(
         id: string,
@@ -15,8 +15,8 @@ export class User {
         name: string,
         email: string,
         role: string,
-        date_created: Date,
-        last_login: Date
+        dateCreated: Date,
+        lastLogin: Date
     ) {
         this.id = id;
         this.username = username;
@@ -24,8 +24,8 @@ export class User {
         this.name = name;
         this.email = email;
         this.role = role;
-        this.date_created = date_created;
-        this.last_login = last_login;
+        this.dateCreated = dateCreated;
+        this.lastLogin = lastLogin;
     }
 
     // Getters
@@ -54,10 +54,10 @@ export class User {
     }
 
     getDateCreated(): Date {
-        return this.date_created;
+        return this.dateCreated;
     }
 
     getLastLogin(): Date {
-        return this.last_login;
+        return this.lastLogin;
     }
 }

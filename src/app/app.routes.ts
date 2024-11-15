@@ -11,6 +11,7 @@ import { ManageRoomsComponent } from '../app/pages/admin/manage-rooms/manage-roo
 import { OverviewComponent } from '../app/pages/admin/overview/overview.component';
 import { ManageHallsComponent } from './pages/admin/manage-halls/manage-halls.component';
 import { ManageDopComponent } from './pages/admin/manage-dop/manage-dop.component';
+import { ManageUserComponent } from './pages/admin/manage-user/manage-user.component';
 
 export const routes: Routes = [
     {
@@ -51,6 +52,9 @@ export const routes: Routes = [
             }, {
                 path: "day-out-packages",
                 component: ManageDopComponent
+            }, {
+                path: "users",
+                component: ManageUserComponent
             }
         ]
     }

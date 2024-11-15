@@ -12,6 +12,7 @@ import { DayOutPackage } from '../../../model/DayOutPackage';
   templateUrl: './manage-dop.component.html'
 })
 export class ManageDopComponent {
+  loading = true;
   dopList: DayOutPackage[] = [];
   permenentDopList: DayOutPackage[] = [];
   selectedDop: DayOutPackage | null = null;
@@ -28,7 +29,7 @@ export class ManageDopComponent {
   loadDops() {
     this.http.get<DayOutPackage[]>("http://localhost:8080/dop/get/all").subscribe(data => {
       data.forEach(obj => {
-        console.log(data);        
+        this.loading = false;
         this.dopList.push(obj);
         this.permenentDopList.push(obj);
       })

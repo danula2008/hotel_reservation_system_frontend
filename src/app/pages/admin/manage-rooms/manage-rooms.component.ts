@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './manage-rooms.component.html'
 })
 export class ManageRoomsComponent {
+  loading = true
   roomList: Room[] = [];
   permenentRoomList: Room[] = [];
   selectedRoom: Room | null = null;
@@ -28,6 +29,7 @@ export class ManageRoomsComponent {
   loadRooms() {
     this.http.get<Room[]>("http://localhost:8080/room/get/all").subscribe(data => {
       data.forEach(obj => {
+        this.loading = false
         this.roomList.push(obj);
         this.permenentRoomList.push(obj);
       })

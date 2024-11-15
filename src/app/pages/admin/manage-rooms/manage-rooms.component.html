@@ -71,7 +71,7 @@
         </div>
     </div>
 
-    <table *ngIf="permenentRoomList.length !== 0"
+    <table *ngIf="!loading"
         class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -81,7 +81,7 @@
                 </th>
             </tr>
         </thead>
-        <tbody *ngIf="roomList.length !== 0">
+        <tbody *ngIf="!loading && roomList.length !== 0">
             <tr (click)="showModel(room)" *ngFor="let room of roomList"
                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
@@ -135,43 +135,15 @@
         </tbody>
     </table>
 
-    <div *ngIf="roomList.length === 0" class="flex justify-center items-center p-8">
+    <div *ngIf="!loading && roomList.length === 0" class="flex justify-center items-center p-8">
         <h1 class="text-md text-gray-700 mt-5 font-semibol">
             No items found
         </h1>
     </div>
 
-    <div role="status" *ngIf="permenentRoomList.length === 0"
-        class="max-w-full p-4 space-y-4 border border-gray-200 divide-y divide-gray-200 rounded shadow animate-pulse dark:divide-gray-700 md:p-6 dark:border-gray-700">
-        <div class="flex items-center justify-between">
-            <div>
-                <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-            </div>
-            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-        </div>
-        <div class="flex items-center justify-between pt-4">
-            <div>
-                <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-            </div>
-            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-        </div>
-        <div class="flex items-center justify-between pt-4">
-            <div>
-                <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-            </div>
-            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-        </div>
-        <div class="flex items-center justify-between pt-4">
-            <div>
-                <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
-                <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-            </div>
-            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
-        </div>
-        <div class="flex items-center justify-between pt-4">
+    <div role="status" *ngIf="loading"
+        class="max-w-full p-4 space-y-4 border border-gray-200 divide-y divide-gray-200 rounded mt-3 animate-pulse dark:divide-gray-700 md:p-6 dark:border-gray-700">
+        <div class="flex items-center justify-between" *ngFor="let i of [].constructor(10)">
             <div>
                 <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
                 <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>

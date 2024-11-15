@@ -12,6 +12,7 @@ import { Hall } from '../../../model/Hall';
   templateUrl: './manage-halls.component.html'
 })
 export class ManageHallsComponent {
+  loading = true
   hallList: Hall[] = [];
   permenentHallList: Hall[] = [];
   selectedHall: Hall | null = null;
@@ -27,8 +28,8 @@ export class ManageHallsComponent {
 
   loadHalls() {
     this.http.get<Hall[]>("http://localhost:8080/hall/get/all").subscribe(data => {
-      data.forEach(obj => {
-        console.log(data);        
+      data.forEach(obj => {      
+        this.loading = false
         this.hallList.push(obj);
         this.permenentHallList.push(obj);
       })
