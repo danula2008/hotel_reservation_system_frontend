@@ -1,1 +1,127 @@
-<p>manage-customer works!</p>
+<div class="relative overflow-x-auto sm:rounded-lg  min-h-[100vh]">
+    <div
+        class="flex flex-col md:flex-row md:items-center justify-between pb-5 bg-white dark:bg-gray-900 rounded-lg shadow-md space-y-6 md:space-y-0 md:space-x-8">
+
+        <div class="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-4">
+            <span class="font-medium text-gray-500 dark:text-gray-300">Gender:</span>
+            <button id="dropdownAvailableButton" data-dropdown-toggle="dropdownAvailable"
+                class="flex items-center text-gray-700 bg-white border border-gray-300 rounded-lg px-4 py-2 shadow-sm focus:outline-none hover:bg-gray-50 focus:ring-2 focus:ring-offset-1 focus:ring-gray-300 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
+                type="button">
+                {{genderFilter}}
+                <svg class="w-4 h-4 ml-2 text-gray-400 dark:text-gray-300" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m1 1 4 4 4-4" />
+                </svg>
+            </button>
+            <div id="dropdownAvailable" class="hidden z-20 w-44 bg-white rounded-lg shadow-lg dark:bg-gray-700">
+                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
+                    <li><a (click)="setGenderFilter('All')"
+                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">All</a>
+                    </li>
+                    <li><a (click)="setGenderFilter('Male')"
+                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Male</a>
+                    </li>
+                    <li><a (click)="setGenderFilter('Female')"
+                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Female</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-4">
+            <span class="font-medium text-gray-500 dark:text-gray-300">Country:</span>
+            <button id="dropdownAvailableCountruButton" data-dropdown-toggle="dropdownAvailableCountry"
+                class="flex items-center text-gray-700 bg-white border border-gray-300 rounded-lg px-4 py-2 shadow-sm focus:outline-none hover:bg-gray-50 focus:ring-2 focus:ring-offset-1 focus:ring-gray-300 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
+                type="button">
+                {{countryFilter}}
+                <svg class="w-4 h-4 ml-2 text-gray-400 dark:text-gray-300" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m1 1 4 4 4-4" />
+                </svg>
+            </button>
+            <div id="dropdownAvailableCountry" class="hidden z-20 w-44 bg-white rounded-lg shadow-lg dark:bg-gray-700">
+                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
+                    <li><a (click)="setCountryFilter('All')"
+                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">All</a>
+                    </li>
+                    <li><a (click)="setCountryFilter(country)" *ngFor="let country of countriesRegions"
+                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{country}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Search Input -->
+        <label for="table-search" class="sr-only">Search</label>
+        <div class="relative">
+            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                </svg>
+            </div>
+            <input type="text" id="table-search-users" [(ngModel)]="searchTxt" (ngModelChange)="searchTextFilter()"
+                class="block w-full md:w-72 py-2 pl-10 pr-4 text-sm text-gray-900 border border-gray-300 rounded-lg shadow-sm bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Search customer by name, ID, UserID">
+        </div>
+    </div>
+
+    <table *ngIf="!loading" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="p-3"
+                    *ngFor="let col of ['Name', 'User ID', 'Gender', 'Date Of Birth', 'Contact', 'Country']">
+                    {{col}}
+                </th>
+            </tr>
+        </thead>
+        <tbody *ngIf="!loading && customerList.length !== 0">
+            <tr *ngFor="let customer of customerList"
+                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" class="flex items-center px-3 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                    <img class="w-14 h-10" [src]="getUserImage(customer.fname + customer.lname)" alt="User">
+                    <div class="ps-3">
+                        <div class="font-normal text-gray-500">{{customer.id}}</div>
+                        <div class="text-base font-normal">{{customer.fname + " " + customer.lname}}</div>
+                    </div>
+                </th>
+                <td class="px-3 py-4">
+                    {{customer.userId}}
+                </td>
+                <td class="px-3 py-4">
+                    {{customer.gender}}
+                </td>
+                <td class="px-3 py-4">
+                    {{customer.dob}}
+                </td>
+                <td class="px-3 py-4">
+                    {{customer.contact}}
+                </td>
+                <td class="px-3 py-4">
+                    {{customer.country}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div *ngIf="!loading && customerList.length === 0" class="flex justify-center items-center p-8">
+        <h1 class="text-md text-gray-700 mt-5 font-semibol">
+            No items found
+        </h1>
+    </div>
+
+    <div role="status" *ngIf="loading"
+        class="max-w-full p-4 space-y-4 border mt-3 border-gray-200 divide-y divide-gray-200 rounded animate-pulse dark:divide-gray-700 md:p-6 dark:border-gray-700">
+        <div class="flex items-center justify-between" *ngFor="let i of [].constructor(10)">
+            <div>
+                <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24 mb-2.5"></div>
+                <div class="w-32 h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+            </div>
+            <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-700 w-12"></div>
+        </div>
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>

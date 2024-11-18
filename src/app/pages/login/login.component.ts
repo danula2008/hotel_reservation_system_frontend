@@ -36,7 +36,7 @@ export class LoginComponent {
     this.http.get<User>(`http://localhost:8080/user/validate-login/${type}?${type}=${encodeURIComponent(this.usernameOrEmail)}&password=${encodeURIComponent(this.password)}`).subscribe(data => {
       if (data) {
         localStorage.setItem('user', JSON.stringify(data))
-        this.router.navigate([data.role === "customer"? '' : '/admin'])
+        this.router.navigate([data.role === "Customer"? '' : '/admin'])
       } else {
         this.invalidType = type
       }

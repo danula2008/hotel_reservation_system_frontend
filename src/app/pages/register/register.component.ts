@@ -246,7 +246,7 @@ export class RegisterComponent {
           this.user.password,
           this.user.firstName + " " + this.user.lastName,
           this.user.email,
-          "customer",
+          "Customer",
           new Date(),
           new Date()
         )

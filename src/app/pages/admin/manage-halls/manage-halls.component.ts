@@ -4,6 +4,7 @@ import { NgClass, NgFor, NgIf } from '@angular/common';
 import { PopupCardComponent } from "../../../common/popup-card/popup-card.component";
 import { FormsModule } from '@angular/forms'
 import { Hall } from '../../../model/Hall';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-manage-halls',
@@ -18,6 +19,8 @@ export class ManageHallsComponent {
   selectedHall: Hall | null = null;
   imagePreview: string | ArrayBuffer | null = null;
 
+  newHall: Hall = new Hall('', '', '', '', 0, 0, '', false, false, '', null, 0, true);
+
   searchTxt = ''
   availableFilter = "All"
   ratingFilter = "All"
@@ -27,13 +30,15 @@ export class ManageHallsComponent {
   }
 
   loadHalls() {
+    this.hallList = []
     this.http.get<Hall[]>("http://localhost:8080/hall/get/all").subscribe(data => {
-      data.forEach(obj => {      
+      data.forEach(obj => {
         this.loading = false
         this.hallList.push(obj);
         this.permenentHallList.push(obj);
       })
-    })
+      console.log(this.hallList[0].available, this.hallList[0].id)
+    })    
   }
 
   setAvailabilityFilter(filter: string) {
@@ -67,12 +72,38 @@ export class ManageHallsComponent {
     this.selectedHall = hall;
   }
 
+  toogleAvailabilityHall(hall: Hall, newState: boolean) {
+    hall.available = newState;
+    this.http.put("http://localhost:8080/hall", hall, { responseType: "text" }).subscribe(data => {
+      this.loadHalls()
+    });
+  }
+
   editHall(hall: Hall) {
     console.log(hall);
   }
 
   deleteHall(hall: Hall) {
-    console.log(hall);
+    Swal.fire({
+      title: `Are you sure you want to delete Room ${hall.id}?`,
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.http.delete(`http://localhost:8080/hall/${hall.id}`, { responseType: "text" }).subscribe(data => {
+          Swal.fire({
+            title: "Deleted!",
+            text: `Hall ${hall.id} has deleted succesfully.`,
+            icon: "success"
+          });
+          this.loadHalls()
+        })
+      }
+    });
   }
 
   onFileSelected(event: Event): void {
@@ -88,5 +119,11 @@ export class ManageHallsComponent {
 
   removeImage(): void {
     this.imagePreview = null;
+  }
+
+  addHall() {
+    this.http.post("http://localhost:8080/hall", this.newHall, { responseType: "text" }).subscribe(data => {
+      this.loadHalls()
+    })
   }
 }

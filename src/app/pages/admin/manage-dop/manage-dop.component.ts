@@ -4,6 +4,7 @@ import { NgClass, NgFor, NgIf } from '@angular/common';
 import { PopupCardComponent } from "../../../common/popup-card/popup-card.component";
 import { FormsModule } from '@angular/forms'
 import { DayOutPackage } from '../../../model/DayOutPackage';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-manage-dop',
@@ -18,6 +19,12 @@ export class ManageDopComponent {
   selectedDop: DayOutPackage | null = null;
   imagePreview: string | ArrayBuffer | null = null;
 
+  newDop: DayOutPackage = new DayOutPackage('', '', '', '', 0, '', '', '', '', '', '', null, 0, true);
+
+  // timeOfDay: string;
+  // foodDetails: string;
+  // groupSize: string;
+
   searchTxt = ''
   availableFilter = "All"
   ratingFilter = "All"
@@ -27,6 +34,7 @@ export class ManageDopComponent {
   }
 
   loadDops() {
+    this.dopList = []
     this.http.get<DayOutPackage[]>("http://localhost:8080/dop/get/all").subscribe(data => {
       data.forEach(obj => {
         this.loading = false;
@@ -71,8 +79,34 @@ export class ManageDopComponent {
     console.log(dop);
   }
 
+  toogleAvailabilityDop(dop: DayOutPackage, newState: boolean) {
+    dop.available = newState;
+    this.http.put("http://localhost:8080/dop", dop, { responseType: "text" }).subscribe(data => {
+      this.loadDops()
+    });
+  }
+
   deleteDop(dop: DayOutPackage) {
-    console.log(dop);
+    Swal.fire({
+      title: `Are you sure you want to delete Day Out Package ${dop.id}?`,
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.http.delete(`http://localhost:8080/dop/id/${dop.id}`, { responseType: "text" }).subscribe(data => {
+          Swal.fire({
+            title: "Deleted!",
+            text: `Day Out Package ${dop.id} has deleted succesfully.`,
+            icon: "success"
+          });
+          this.loadDops()
+        })
+      }
+    });
   }
 
   onFileSelected(event: Event): void {
@@ -88,5 +122,11 @@ export class ManageDopComponent {
 
   removeImage(): void {
     this.imagePreview = null;
+  }
+
+  addDop() {
+    this.http.post("http://localhost:8080/dop", this.newDop, { responseType: "text" }).subscribe(data => {
+      this.loadDops()
+    })
   }
 }

@@ -5,6 +5,7 @@ import { NgClass, NgFor, NgIf } from '@angular/common';
 import { PopupCardComponent } from "../../../common/popup-card/popup-card.component";
 import { FormsModule } from '@angular/forms';
 import LZUTF8 from 'lzutf8';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-manage-rooms',
@@ -23,16 +24,16 @@ export class ManageRoomsComponent {
   availableFiler = "All"
   ratingFiler = "All"
 
-  newRoom: Room = new Room('', '', '', '', 0, '', 0, '', '', false, false, '', 0, false);
+  newRoom: Room = new Room('', '', '', '', 0, '', 0, '', '', false, false, '', 0, true);
 
   constructor(private http: HttpClient) {
     this.loadRooms();
   }
 
   loadRooms() {
+    this.roomList = []
     this.http.get<Room[]>("http://localhost:8080/room/get/all").subscribe(data => {
       data.forEach(obj => {
-        console.log(obj)
         this.loading = false
         this.roomList.push(obj);
         this.permenentRoomList.push(obj);
@@ -76,8 +77,34 @@ export class ManageRoomsComponent {
     console.log(room);
   }
 
+  toogleAvailabilityRoom(room: Room, newState: boolean) {
+    room.available = newState;
+    this.http.put("http://localhost:8080/room", room, { responseType: "text" }).subscribe(data => {
+      this.loadRooms()
+    });
+  }
+
   deleteRoom(room: Room) {
-    console.log(room);
+    Swal.fire({
+      title: `Are you sure you want to delete Room ${room.id}?`,
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.http.delete(`http://localhost:8080/room/${room.id}`, { responseType: "text" }).subscribe(data => {
+          Swal.fire({
+            title: "Deleted!",
+            text: `Room ${room.id} has deleted succesfully.`,
+            icon: "success"
+          });
+          this.loadRooms()
+        })
+      }
+    });
   }
 
   onFileSelected(event: Event): void {
@@ -93,7 +120,7 @@ export class ManageRoomsComponent {
       };
 
       reader.readAsDataURL(file);
-    }    
+    }
   }
 
   removeImage(): void {
@@ -101,9 +128,9 @@ export class ManageRoomsComponent {
     this.newRoom.image = '';
   }
 
-  addRoom(){
-    // this.http.post("http://localhost:8080/room", this.newRoom).subscribe(data => {
-    //   console.log(data)
-    // })
+  addRoom() {
+    this.http.post("http://localhost:8080/room", this.newRoom, { responseType: "text" }).subscribe(data => {
+      this.loadRooms()
+    })
   }
 }

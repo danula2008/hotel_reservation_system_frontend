@@ -71,8 +71,7 @@
         </div>
     </div>
 
-    <table *ngIf="!loading"
-        class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+    <table *ngIf="!loading" class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 mb-16">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
                 <th scope="col" class="p-3"
@@ -101,7 +100,7 @@
                 </td>
                 <td class="px-6 py-4">
                     <div class="flex items-center">
-                        <div class="h-2.5 w-2.5 rounded-full me-2"
+                        <div class="h-2.5 w-2.5 rounded-full me-2 animate-pulse"
                             [ngClass]="dop.available? 'bg-green-500' : 'bg-red-500'"></div>{{dop.available?
                         "Available" : "Not Available"}}
                     </div>
@@ -109,8 +108,24 @@
                 <td class="px-6 py-4">
                     Rs. {{dop.price}}
                 </td>
-                <td class="centered-td px-6 py-4">
+                <td class="centered-td py-4">
                     <div class="flex gap-3 justify-center items-center">
+                        <button (click)="toogleAvailabilityDop(dop, !dop.available); $event.stopPropagation()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" *ngIf="dop.available"
+                                class="w-6 h-6 text-gray-800 dark:text-white hover:scale-[1.05] transition-transform duration-200 ease-in-out transform-gpu"
+                                viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                <path
+                                    d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"
+                                *ngIf="!dop.available"
+                                class="w-6 h-6 text-gray-800 dark:text-white hover:scale-[1.05] transition-transform duration-200 ease-in-out transform-gpu">>
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                <path
+                                    d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05" />
+                            </svg>
+                        </button>
                         <button (click)="editDop(dop); $event.stopPropagation()">
                             <svg class="w-6 h-6 text-gray-800 dark:text-white hover:scale-[1.05] transition-transform duration-200 ease-in-out transform-gpu"
                                 aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
@@ -169,6 +184,7 @@
     </button>
 </div>
 
+<!-- Day Out Package Input Modal -->
 <div id="dop-input-modal" tabindex="-1" aria-hidden="true"
     class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative p-4 w-full max-w-2xl max-h-full">
@@ -194,30 +210,32 @@
             <!-- Modal body -->
             <form class="space-y-4">
                 <div class="grid grid-cols-2 gap-4">
+                    <!-- Day Out Package Name -->
                     <div class="col-span-2">
                         <label for="dop-name" class="block text-sm font-medium text-gray-900 dark:text-white">Day Out Package
                             Name</label>
-                        <input type="text" id="dop-name" name="dop-name"
+                        <input type="text" id="dop-name" name="dop-name" [(ngModel)]="newDop.name"
                             class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg p-2.5 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                            placeholder="Ocean View Package" required>
+                            placeholder="Enter dop name" required>
                     </div>
 
+                    <!-- Day Out Package Code -->
                     <div>
                         <label for="rating"
                             class="block text-sm font-medium text-gray-900 dark:text-white">Rating</label>
                         <input type="number" id="rating" name="rating" min="1" max="5" step="1.0" id="dop-code"
-                            name="rating"
+                            name="rating" [(ngModel)]="newDop.rating"
                             class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg p-2.5 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                            placeholder="5.0" required>
+                            placeholder="Enter dop rating" required>
                     </div>
 
                     <!-- Price -->
                     <div>
                         <label for="price" class="block text-sm font-medium text-gray-900 dark:text-white">Price
                             (Rs.)</label>
-                        <input type="number" id="price" name="price"
+                        <input type="number" id="price" name="price" [(ngModel)]="newDop.price"
                             class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg p-2.5 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                            placeholder="150" required>
+                            placeholder="Enter dop price (per night)" required>
                     </div>
 
                 </div>
@@ -226,64 +244,55 @@
                 <div>
                     <label for="description"
                         class="block text-sm font-medium text-gray-900 dark:text-white">Description</label>
-                    <textarea id="description" rows="3" name="description"
+                    <textarea id="description" rows="3" name="description" [(ngModel)]="newDop.description"
                         class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg p-2.5 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                        placeholder="A cozy dop with stunning views of the ocean, ideal for solo travelers or business trips."
-                        required></textarea>
+                        placeholder="Describe the dop" required></textarea>
                 </div>
 
                 <!-- Features -->
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label for="type" class="block text-sm font-medium text-gray-900 dark:text-white">Type</label>
-                        <input type="text" id="type" name="type"
+                        <label for="type" class="block text-sm font-medium text-gray-900 dark:text-white">Duration</label>
+                        <input type="text" id="type" name="type" [(ngModel)]="newDop.duration"
                             class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg p-2.5 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                            placeholder="Single" required>
+                            placeholder="Enter Duration of dop" required>
                     </div>
                     <div>
                         <label for="capacity"
-                            class="block text-sm font-medium text-gray-900 dark:text-white">Capacity</label>
-                        <input type="number" id="capacity" name="capacity"
+                            class="block text-sm font-medium text-gray-900 dark:text-white">Inclusion</label>
+                        <input type="number" id="capacity" name="capacity" [(ngModel)]="newDop.inclusion"
                             class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg p-2.5 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                            placeholder="1" required>
+                            placeholder="Enter dop Inclusions" required>
+                    </div>
+                    <div>
+                        <label for="features" class="block text-sm font-medium text-gray-900 dark:text-white">Equipments</label>
+                        <input type="text" id="features" name="features" [(ngModel)]="newDop.equipments"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg p-2.5 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                            placeholder="Enter Equipments of dop" required>
+                    </div>
+                    <div>
+                        <label for="view" class="block text-sm font-medium text-gray-900 dark:text-white">Age Limit</label>
+                        <input type="text" id="view" name="view" [(ngModel)]="newDop.ageLimit"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg p-2.5 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                            placeholder="Enter the age limit of dop" required>
+                    </div>
+                    <div>
+                        <label for="view" class="block text-sm font-medium text-gray-900 dark:text-white">Time Of Day</label>
+                        <input type="text" id="view" name="view" [(ngModel)]="newDop.timeOfDay"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg p-2.5 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                            placeholder="Enter the time of day of dop" required>
+                    </div>
+                    <div>
+                        <label for="view" class="block text-sm font-medium text-gray-900 dark:text-white">Food Details</label>
+                        <input type="text" id="view" name="view" [(ngModel)]="newDop.foodDetails"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg p-2.5 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                            placeholder="Enter food details of dop" required>
                     </div>
                     <div class="col-span-2">
-                        <label for="features"
-                            class="block text-sm font-medium text-gray-900 dark:text-white">Features</label>
-                        <input type="text" id="features" name="features"
+                        <label for="view" class="block text-sm font-medium text-gray-900 dark:text-white">Group Size</label>
+                        <input type="text" id="view" name="view" [(ngModel)]="newDop.groupSize"
                             class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg p-2.5 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                            placeholder="Air conditioning, Mini bar, Coffee maker" required>
-                    </div>
-                    <div>
-                        <label for="bed-type" class="block text-sm font-medium text-gray-900 dark:text-white">Bed
-                            Type</label>
-                        <input type="text" id="bed-type" name="bed-type"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg p-2.5 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                            placeholder="Single" required>
-                    </div>
-                    <div>
-                        <label for="view" class="block text-sm font-medium text-gray-900 dark:text-white">View</label>
-                        <input type="text" id="view" name="view"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg p-2.5 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                            placeholder="Ocean" required>
-                    </div>
-                    <div>
-                        <label for="internet" class="block text-sm font-medium text-gray-900 dark:text-white">Internet
-                            Access</label>
-                        <select id="internet" name="internet"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg p-2.5 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="television"
-                            class="block text-sm font-medium text-gray-900 dark:text-white">Television</label>
-                        <select id="television" name="television"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg p-2.5 w-full dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
-                        </select>
+                            placeholder="Enter group size of dop" required>
                     </div>
                 </div>
 
@@ -293,7 +302,7 @@
 
                 <div class="flex items-center justify-center w-full" *ngIf="!imagePreview">
                     <label for="dropzone-file"
-                        class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                        class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                         <div class="flex flex-col items-center justify-center pb-6">
                             <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
@@ -325,11 +334,11 @@
                 </div>
 
                 <!-- Submit Button -->
-                <button type="submit"
+                <button type="submit" data-modal-toggle="dop-input-modal" (click)="addDop()"
                     class="mt-4 font-bold text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                     Add Day Out Package
                 </button>
             </form>
         </div>
     </div>
-</div>F
+</div>
