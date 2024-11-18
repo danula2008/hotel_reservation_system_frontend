@@ -14,7 +14,7 @@
                         <label class="text-gray-800 text-md mb-2 block font-semibold" for="username">Username or
                             Email</label>
                         <div class="relative flex items-center">
-                            <input name="username" type="text" required
+                            <input name="username" type="text" required [(ngModel)]="usernameOrEmail"
                                 class="w-full text-md text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600"
                                 placeholder="Enter username or email" />
                             <svg xmlns="http://www.w3.org/2000/svg" fill="#bbb" stroke="#bbb"
@@ -29,7 +29,7 @@
                     <div>
                         <label class="text-gray-800 text-md mb-2 block font-semibold" for="password">Password</label>
                         <div class="relative flex items-center">
-                            <input name="password" [type]="showPassword ? 'text' : 'password'" required
+                            <input name="password" [type]="showPassword ? 'text' : 'password'" required [(ngModel)]="password"
                                 class="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600 transition duration-200 ease-in-out"
                                 placeholder="Enter password" />
 
@@ -57,8 +57,8 @@
                         </div>
                     </div>
 
-                    <div *ngIf="invalidLogin" class="text-sm !mt-8 text-center">
-                        Invalid username or password.
+                    <div *ngIf="invalidType" class="text-sm !mt-8 text-center text-red-600">
+                        Invalid {{invalidType}} or password.
                     </div>
 
                     <div class="!mt-8">

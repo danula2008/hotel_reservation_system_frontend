@@ -2,7 +2,6 @@ import { NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Router } from '@angular/router';
-import { User } from '../../model/User';
 
 @Component({
   selector: 'app-header',
@@ -51,6 +50,8 @@ export class HeaderComponent implements OnInit {
   }
 
   signOut(){
+    this.isDropdownOpen = false
+    this.isMobileHeaderOpen = false
     localStorage.removeItem('user')
     this.loggedIn = false;
   }

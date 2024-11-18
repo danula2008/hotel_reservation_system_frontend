@@ -10,7 +10,7 @@ export class Room {
     view: string;
     internetAccess: boolean;
     television: boolean;
-    image: Blob | null;
+    image: string;
     rating: number;
     available: boolean;
 
@@ -26,7 +26,7 @@ export class Room {
         view: string,
         internetAccess: boolean,
         television: boolean,
-        image: Blob | null,
+        image: string,
         rating: number,
         available: boolean
     ) {
@@ -90,7 +90,7 @@ export class Room {
         return this.television;
     }
 
-    public getImage(): Blob | null {
+    public getImage(): string {
         return this.image;
     }
 

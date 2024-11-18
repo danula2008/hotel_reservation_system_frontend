@@ -3,11 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { User } from '../../model/User';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [NgIf, RouterLink],
+  imports: [NgIf, RouterLink, FormsModule],
   templateUrl: './login.component.html'
 })
 export class LoginComponent {
@@ -15,7 +16,7 @@ export class LoginComponent {
   constructor(private http: HttpClient, private router: Router) { }
 
   showPassword = false
-  invalidLogin = false
+  invalidType = ''
 
   usernameOrEmail = ''
   password = ''
@@ -32,24 +33,13 @@ export class LoginComponent {
       type = 'username'
     }
 
-    localStorage.setItem('user', JSON.stringify(new User(
-      '12345',
-      'johndoe',
-      '',
-      'John Doe',
-      'johndoe@example.com',
-      'Admin',
-      new Date('2023-01-01T00:00:00Z'),
-      new Date()
-    )));
-
-    // this.http.get<User>(`http://localhost:8080/user/validate-login/?${encodeURIComponent(type)}=${encodeURIComponent(this.usernameOrEmail)}&password=${encodeURIComponent(this.password)}`).subscribe(data => {
-    //   if (data.toString() !== 'Invalid') {
-    //     localStorage.setItem('userId', data.toString())
-    //     this.router.navigate([''])
-    //   } else {
-    //     this.invalidLogin = true
-    //   }
-    // })
+    this.http.get<User>(`http://localhost:8080/user/validate-login/${type}?${type}=${encodeURIComponent(this.usernameOrEmail)}&password=${encodeURIComponent(this.password)}`).subscribe(data => {
+      if (data) {
+        localStorage.setItem('user', JSON.stringify(data))
+        this.router.navigate([data.role === "customer"? '' : '/admin'])
+      } else {
+        this.invalidType = type
+      }
+    })
   }
 }

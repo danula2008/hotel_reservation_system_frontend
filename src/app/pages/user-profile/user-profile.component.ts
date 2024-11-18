@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2'
@@ -13,16 +13,28 @@ import Swal from 'sweetalert2'
 })
 export class UserProfileComponent {
 
-  constructor(private route: ActivatedRoute, private http: HttpClient) {
+  constructor(private route: Router, private http: HttpClient) {
     this.callLoadCustomer();
-
-    this.user = localStorage.getItem('user')
   }
 
   customer: any;
-  user: any;
+  user = JSON.parse(localStorage.getItem('user') || '{}');
   isEditable = false;
   userProfileImage: any;
+
+  countriesRegions: string[] = [
+    'Sri Lanka',
+    'Africa',
+    'Asia',
+    'Australia and Oceania',
+    'Caribbean',
+    'Central America',
+    'Europe',
+    'Middle East',
+    'North America',
+    'South America'
+  ];
+
 
   async callLoadCustomer() {
     await this.loadCustomer();
@@ -55,8 +67,9 @@ export class UserProfileComponent {
       cancelButtonText: "No, cancel!",
     }).then((result) => {
       if (result.isConfirmed) {
-        this.http.put(`http://localhost:8080/customer/${this.customer.id}`, this.customer).subscribe(data => {
-          this.http.put(`http://localhost:8080/user/${this.user.id}`, this.user).subscribe(data => {
+        this.http.put(`http://localhost:8080/customer`, this.customer).subscribe(data => {
+          this.http.put(`http://localhost:8080/user`, this.user, { responseType: 'text' }
+          ).subscribe(data => {
             Swal.fire({
               title: "Saved!",
               text: "Your details has been saved.",
@@ -84,7 +97,11 @@ export class UserProfileComponent {
     }).then((result) => {
       if (result.isConfirmed) {
         this.http.delete(`http://localhost:8080/customer/id/${this.customer.id}`).subscribe(data => {
-          this.http.delete(`http://localhost:8080/user/${this.user.id}`).subscribe(data => {
+
+          this.http.delete(`http://localhost:8080/user/${this.user.id}`, { responseType : "text"}).subscribe(data => {
+            
+            localStorage.removeItem('user')
+            this.route.navigate([''])
             Swal.fire({
               title: "Deleted!",
               text: "Your account has been deleted.",

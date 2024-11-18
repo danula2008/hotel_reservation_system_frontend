@@ -7,6 +7,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { Customer } from '../../model/Customer';
 
 @Component({
   selector: 'app-reserve-resource',
@@ -34,20 +35,19 @@ export class ReserveResourceComponent {
 
     this.noDays = (new Date(this.queryParams.end).getTime() - new Date(this.queryParams.start).getTime()) / (1000 * 60 * 60 * 24);
     this.loadResourceFunctionCaller();
-    
   }
 
-  async loadResourceFunctionCaller(){
+  async loadResourceFunctionCaller() {
     await this.loadResource()
   }
 
-  async loadResource(){
-    this.http.get(`http://localhost:8080/${this.resourceType.toLowerCase()}/get/id/${this.queryParams.id}`).subscribe(data => this.resourceDetails = data)
+  async loadResource() {
+    this.resourceDetails = JSON.parse(sessionStorage.getItem("reservationResourceDetails") || '{}');
   }
 
   queryParams: any;
   resourceType = ''
-
+  placingReservation = false;
   resourceDetails: any;
 
   noDays = 0
@@ -74,19 +74,56 @@ export class ReserveResourceComponent {
     return isValidNoMembers && isAccommodationTypeRoom;
   }
 
-  placeReservation(){
-    // let reservationDetails = {
-    //   "id": "string",
-    //   "customerId": localStorage.getItem('customerId'),
-    //   "totPrice": 0,
-    //   "status": "Booked",
-    //   "noMembers": this.noMembers,
-    //   "paymentCompleted": false,
-    //   "createdDate": new Date().toISOString().split('T')[0],
-    //   "createdTime": new Date().toTimeString().slice(0, 8),
-    //   "specialRequests": this.specialRequests
-    // }
+  placeReservation() {
+    this.placingReservation = true;
+    const now = new Date();
+    this.http.get<Customer>(`http://localhost:8080/customer/get/user_id/${JSON.parse(localStorage.getItem('user') || '{}').id}`).subscribe(customer => {
+      
+      this.http.post('http://localhost:8080/reservation/add', {
+        customerId: customer.id,
+        totPrice: this.resourceDetails.price * this.noDays,
+        status: "confirmed",
+        noMembers: this.noMembers,
+        paymentCompleted: false,
+        createdDate: now.toISOString().split('T')[0],
+        createdTime: now.toTimeString().split(' ')[0],
+        specialRequests: this.specialRequests,
+      }, { responseType: 'text' }).subscribe(reservationId => {
 
-    // this.http.post("http://localhost:8080/reservation/add", reservationDetails).subscribe(data => )
+        this.http.post(`http://localhost:8080/reserve/room/add`, {
+          "reservationId": reservationId,
+          "roomId": this.resourceDetails.id,
+          "arrivalDate": this.queryParams.start,
+          "departureDate": this.queryParams.end
+        }, { responseType: 'text' }).subscribe(roomReserveData => {
+
+          this.http.post(`http://localhost:8080/reserve/date`, {
+            "reservationId": reservationId,
+            "resourceId": this.resourceDetails.id,
+            "dates": this.generateDateRange(new Date(this.queryParams.start), new Date(this.queryParams.end))
+          }, { responseType: 'text' }).subscribe(reservationDateData => {
+
+            this.placingReservation = false;
+            this.nextStep()
+
+          })
+        })
+      })
+    })
+  }
+
+  private generateDateRange(startDate: Date | null, endDate: Date | null): string[] {
+    if (!startDate || !endDate) return [];
+
+    const dates: string[] = [];
+    let currentDate = new Date(startDate);
+
+    while (currentDate <= endDate) {
+      const formattedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}`;
+      dates.push(formattedDate);
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    return dates;
   }
 }

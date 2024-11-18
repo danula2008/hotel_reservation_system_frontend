@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-popup-card',
@@ -15,7 +16,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './popup-card.component.html'
 })
 export class PopupCardComponent implements OnChanges {
-  constructor(private router: Router) { }
+  constructor(private router: Router, private http: HttpClient) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.getResourceFeatures()
@@ -26,6 +27,7 @@ export class PopupCardComponent implements OnChanges {
   @Output() close = new EventEmitter<void>();
 
   isAvailable: boolean = false;
+  roomAvailabilityMsg = ''
   public star: number = 4
 
   resourceFeaturesValues: any = [];
@@ -34,7 +36,7 @@ export class PopupCardComponent implements OnChanges {
   dateRange = {
     startDate: null as Date | null,
     endDate: null as Date | null
-  };  
+  };
 
   closePopup() {
     this.close.emit();
@@ -42,9 +44,9 @@ export class PopupCardComponent implements OnChanges {
 
   getResourceFeatures() {
     if (this.resource.id.startsWith("R")) {
-      this.resourceFeaturesNames = ["Type", "Capacity", "Features", "Bed Type", "View", "Internet Access", "Television"];
+      this.resourceFeaturesNames = ["Description", "Type", "Capacity", "Features", "Bed Type", "View", "Internet Access", "Television"];
 
-      ["type", "capacity", "features", "bedType", "view", "internetAccess", "television"].forEach(feature => {
+      ["description", "type", "capacity", "features", "bedType", "view", "internetAccess", "television"].forEach(feature => {
         this.resourceFeaturesValues.push(
           ["internetAccess", "television"].includes(feature)
             ? this.resource[feature] === true ? "Yes" : "No"
@@ -69,15 +71,45 @@ export class PopupCardComponent implements OnChanges {
   }
 
   book(): void {
-    this.router.navigate(['/reserve'], { queryParams: { 
-      id: this.resource.id,
-      start: this.dateRange.startDate!.toISOString().slice(0, 10),
-      end: this.dateRange.endDate!.toISOString().slice(0, 10)
-    }});
+    let user = localStorage.getItem('user')
+    if (user) {
+      sessionStorage.setItem("reservationResourceDetails", JSON.stringify(this.resource))
+      this.router.navigate(['/reserve'], {
+        queryParams: {
+          id: this.resource.id,
+          start: this.dateRange.startDate!.toISOString().slice(0, 10),
+          end: this.dateRange.endDate!.toISOString().slice(0, 10)
+        }
+      });
+      return;
+    }
+    this.router.navigate(['/login'])
   }
 
   checkAvailability(): void {
-    // this.http.get("")
-    this.isAvailable = true;
+    this.http.get(`http://localhost:8080/reserve/date/check-availability?resourceId=${this.resource.id}&${this.generateDateRange(this.dateRange.startDate, this.dateRange.endDate).map(date => `dates=${date}`).join('&')}`).subscribe(data => {
+      if (data) {
+        this.isAvailable = true;
+        this.roomAvailabilityMsg = `${this.resource.name} is available for all selected date(s).`
+      } else{
+        this.roomAvailabilityMsg = `${this.resource.name} is not available for all selected date(s).`
+      }
+    })
   }
+
+  private generateDateRange(startDate: Date | null, endDate: Date | null): string[] {
+    if (!startDate || !endDate) return [];
+
+    const dates: string[] = [];
+    let currentDate = new Date(startDate);
+
+    while (currentDate <= endDate) {
+      const formattedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}`;
+      dates.push(formattedDate);
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    return dates;
+  }
+
 }

@@ -2,7 +2,7 @@
     <div class="grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12">
         <div class="mr-auto place-self-center lg:col-span-7">
             <h1
-                class="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl text-[#152C5B] dark:text-white font-poppins">
+                class="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl text-[#162e5e] dark:text-white font-poppins">
                 Escape to comfort and let your adventure begin!</h1>
             <p
                 class="max-w-2xl mb-6 font-light text-gray-400 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400 font-poppins">
@@ -20,7 +20,7 @@
                         <path
                             d="M3 7.5a.5.5 0 0 0-1 0v5a.5.5 0 0 0 1 0zM11 6a1.5 1.5 0 0 1 1.5 1.5V8h2A1.5 1.5 0 0 1 16 9.5v5a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 14.5v-5A1.5 1.5 0 0 1 6.5 8h2v-.5A1.5 1.5 0 0 1 10 6zM9.5 7.5V8h2v-.5A.5.5 0 0 0 11 7h-1a.5.5 0 0 0-.5.5M6 9.5v5a.5.5 0 0 0 .5.5H7V9h-.5a.5.5 0 0 0-.5.5m7 5.5V9H8v6zm1.5 0a.5.5 0 0 0 .5-.5v-5a.5.5 0 0 0-.5-.5H14v6z" />
                     </svg>
-                    <h2 class="mt-1"><span class="text-blue-900 dark:text-blue-800 font-semibold">80, 409</span>
+                    <h2 class="mt-1"><span class="text-blue-900 dark:text-blue-800 font-semibold">80,000+</span>
                         Travelers</h2>
                 </div>
                 <div class="flex flex-col items-center">
@@ -124,7 +124,7 @@
 </section> -->
 
 
-<section class="mt-16">
+<section>
     <h1
         class="max-w-2xl mb-4 text-md font-semibold tracking-tight leading-none md:text-lg xl:text-xl text-[#152C5B] dark:text-white font-poppins">
         Hotel Rooms
@@ -236,8 +236,8 @@
                     "768": {"slidesPerView": 2, "spaceBetween": 28},
                     "1024": {"slidesPerView": 2, "spaceBetween": 32}
                 }' class="swiper testimonialsSwiper w-full lg:w-3/5">
-                <swiper-slide *ngFor="let i of [1,2,3,4,5]">
-                    <app-slider-card></app-slider-card>
+                <swiper-slide *ngFor="let review of hotelReviews">
+                    <app-slider-card [customerComment]="review"></app-slider-card>
                 </swiper-slide>
             </swiper-container>
 

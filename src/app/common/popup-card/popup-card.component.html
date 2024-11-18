@@ -4,52 +4,51 @@
         <div class="relative">
             <!-- Close Button -->
             <button
-                class="absolute top-1 right-4 text-gray-500 hover:scale-110 text-3xl focus:outline-none transition-transform transform duration-150 z-50"
-                (click)="closePopup()">
+                class="absolute top-2 right-4 text-gray-500 hover:text-gray-700 text-2xl focus:outline-none transition-transform transform duration-150"
+                aria-label="Close" (click)="closePopup()">
                 &times;
             </button>
 
-
-            <div class="flex flex-col md:flex-row">
+            <div class="flex flex-col md:flex-row gap-6 p-6">
                 <!-- Product Images -->
-                <div class="w-full md:w-1/2 p-6 flex flex-col items-center">
-                    <!-- Main Image with Close Button on Top -->
-                    <div
-                        class="relative group w-full max-w-md max-h-80 h-auto overflow-hidden rounded-lg shadow-lg mb-4">
+                <div class="w-full md:w-1/2 flex flex-col items-center">
+                    <div class="relative group w-full max-w-md max-h-80 h-auto overflow-hidden rounded-lg shadow-lg">
                         <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/529992676.jpg?k=f62c521c45cf09ba84af2e5c92da714e613781c96a52c49a8df86b47e7222d11&o=&hp=1"
-                            alt="Product"
+                            alt="Product Image"
                             class="w-full h-full object-cover rounded-lg transition-transform duration-300 group-hover:scale-105"
                             id="mainImage">
                     </div>
                 </div>
 
                 <!-- Product Details -->
-                <div class="w-full md:w-1/2 p-6">
-                    <h2 class="text-2xl sm:text-3xl font-semibold mb-3 text-gray-800">{{resource.name}}</h2>
-                    <p class="text-gray-500 mb-2">Room Code: {{resource.id}}</p>
-                    <span class="text-xl sm:text-2xl font-semibold text-blue-600 mb-2 block">Rs.
-                        {{resource.price}}</span>
+                <div class="w-full md:w-1/2">
+                    <h2 class="text-3xl font-bold mb-2 text-gray-800">{{ resource.name }}</h2>
+                    <p class="text-gray-500 mb-4">Room Code: {{ resource.id }}</p>
 
-                    <!-- Rating -->
-                    <div class="flex items-center">
-                        <ng-container *ngFor="let item of [].constructor(resource.rating)">
-                            <svg class="w-5 h-5 text-yellow-500" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 22 20">
-                                <path
-                                    d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                            </svg>
-                        </ng-container>
-                        <ng-container *ngFor="let item of [].constructor(5 - resource.rating)">
-                            <svg class="w-5 h-5 text-gray-300" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 22 20">
-                                <path
-                                    d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                            </svg>
-                        </ng-container>
-                        <span class="ml-2 text-gray-600">{{resource.rating}}.0</span>
+                    <!-- Price and Rating -->
+                    <div class="flex items-center gap-5 mb-4">
+                        <span class="text-2xl font-bold text-blue-600">Rs. {{ resource.price }}</span>
+                        <div class="flex items-center">
+                            <ng-container *ngFor="let star of [].constructor(resource.rating)">
+                                <svg class="w-5 h-5 text-yellow-500" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 22 20" fill="currentColor">
+                                    <path
+                                        d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                </svg>
+                            </ng-container>
+                            <ng-container *ngFor="let item of [].constructor(5 - resource.rating)">
+                                <svg class="w-5 h-5 text-gray-300" fill="currentColor"
+                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 20">
+                                    <path
+                                        d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                </svg>
+                            </ng-container>
+                            <span class="ml-2 text-gray-600">{{ resource.rating }}.0</span>
+                        </div>
                     </div>
 
-                    <mat-form-field appearance="fill" class="w-full my-4" *ngIf="!adminView">
+                    <!-- Date Picker -->
+                    <mat-form-field appearance="fill" class="w-full mb-4" *ngIf="!adminView">
                         <mat-label>Enter a date range</mat-label>
                         <mat-date-range-input [rangePicker]="picker">
                             <input matStartDate placeholder="Start date" [(ngModel)]="dateRange.startDate" />
@@ -60,35 +59,33 @@
                         <mat-date-range-picker #picker></mat-date-range-picker>
                     </mat-form-field>
 
+                    <!-- Availability/Error -->
+                    <p class="text-md mb-4" [ngClass]="isAvailable? 'text-green-500' : 'text-red-500'">{{ roomAvailabilityMsg }}</p>
+
                     <!-- Action Buttons -->
                     <div class="flex gap-4">
                         <button *ngIf="!adminView"
-                            class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition duration-200"
+                            class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-200"
                             (click)="isAvailable ? book() : checkAvailability()">
-                            {{isAvailable ? "Book Now" : "Check Availability"}}
+                            {{ isAvailable ? "Book Now" : "Check Availability" }}
                         </button>
                         <button
-                            [ngClass]="adminView? 'mt-5 bg-blue-600 text-white px-6 py-2 hover:bg-blue-700' : 'text-gray-600 px-6 py-2 border border-gray-300 hover:bg-gray-100'"
-                            class="transition duration-200 rounded-md"
-                            (click)="closePopup()">
+                            [ngClass]="adminView ? 'mt-5 bg-blue-600 text-white px-4 py-2 hover:bg-blue-700' : 'text-gray-600 px-4 py-2 border border-gray-300 hover:bg-gray-100'"
+                            class="transition duration-200 rounded-lg" (click)="closePopup()">
                             Close
                         </button>
                     </div>
                 </div>
             </div>
 
-            <div class="ml-6">
-                {{resource.description ? resource.description : resource.features}}
-            </div>
-
             <!-- Key Features -->
             <div class="p-6">
-                <h3 class="text-lg font-semibold mb-3 text-gray-800">Key Features:</h3>
+                <h3 class="text-xl font-semibold mb-4 text-gray-800">Key Features:</h3>
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead>
                         <tr>
-                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-500 uppercase">Feature</th>
-                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-500 uppercase">Value</th>
+                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-500">Feature</th>
+                            <th class="px-4 py-2 text-left text-sm font-medium text-gray-500">Value</th>
                         </tr>
                     </thead>
                     <tbody>

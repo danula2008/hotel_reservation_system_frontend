@@ -15,7 +15,8 @@
                     <section *ngIf="step === 1">
                         <div class="block sm:flex gap-5">
                             <div class="w-full sm:w-1/2">
-                                <label class="text-gray-800 text-sm mb-2 block font-semibold" for="firstName">First Name</label>
+                                <label class="text-gray-800 text-sm mb-2 block font-semibold" for="firstName">First
+                                    Name</label>
                                 <input name="firstName" type="text" required [(ngModel)]="user.firstName"
                                     class="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600"
                                     placeholder="Enter first name" [ngClass]="fName_error? '' : 'mb-5'"
@@ -26,7 +27,8 @@
                             </div>
 
                             <div class="w-full sm:w-1/2">
-                                <label class="text-gray-800 text-sm mb-2 block font-semibold" for="lastName">Last Name</label>
+                                <label class="text-gray-800 text-sm mb-2 block font-semibold" for="lastName">Last
+                                    Name</label>
                                 <input name="lastName" type="text" required [(ngModel)]="user.lastName"
                                     class="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600"
                                     placeholder="Enter last name" [ngClass]="lName_error? '' : 'mb-5'"
@@ -39,11 +41,12 @@
 
                         <div class="block sm:flex gap-5">
                             <div class="w-full sm:w-1/2">
-                                <label class="text-gray-800 text-sm mb-2 block font-semibold" for="gender">Gender</label>
+                                <label class="text-gray-800 text-sm mb-2 block font-semibold"
+                                    for="gender">Gender</label>
                                 <select name="gender" required [(ngModel)]="user.gender"
                                     class="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600"
                                     [ngClass]="gender_error? '' : 'mb-5'" (ngModelChange)="genderValidate()">
-                                    <option value="null" disabled>Select gender</option>
+                                    <option value="" disabled>Select gender</option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
                                 </select>
@@ -53,13 +56,12 @@
                             </div>
 
                             <div class="w-full sm:w-1/2">
-                                <label class="text-gray-800 text-sm mb-2 block font-semibold" for="dob">Date of Birth</label>
+                                <label class="text-gray-800 text-sm mb-2 block font-semibold" for="dob">Date of
+                                    Birth</label>
                                 <input name="dob" type="date" required [(ngModel)]="user.dateOfBirth"
                                     class="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600"
                                     [ngClass]="dob_error? '' : 'mb-5'" placeholder="Enter date of birth"
-                                    (ngModelChange)="dobValidate()" 
-                                    [attr.max]="today"
-                                    />
+                                    (ngModelChange)="dobValidate()" [attr.max]="today" />
                                 <div *ngIf="dob_error" class="text-red-500 text-xs mt-1 mb-5">
                                     {{dob_error}}
                                 </div>
@@ -68,7 +70,8 @@
 
                         <div class="block sm:flex gap-5">
                             <div class="w-full sm:w-1/2">
-                                <label class="text-gray-800 text-sm mb-2 block font-semibold" for="contactNumber">Contact
+                                <label class="text-gray-800 text-sm mb-2 block font-semibold"
+                                    for="contactNumber">Contact
                                     Number</label>
                                 <input name="contactNumber" type="text" required [(ngModel)]="user.contact"
                                     class="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600"
@@ -80,11 +83,12 @@
                             </div>
 
                             <div class="w-full sm:w-1/2">
-                                <label class="text-gray-800 text-sm mb-2 block font-semibold" for="country">Country</label>
+                                <label class="text-gray-800 text-sm mb-2 block font-semibold"
+                                    for="country">Country</label>
                                 <select name="country" type="text" required [(ngModel)]="user.country"
                                     class="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600"
                                     placeholder="Enter country" [ngClass]="country_error? '' : 'mb-5'">
-                                    <option value="null" disabled>Select country</option>
+                                    <option value="" disabled>Select country</option>
                                     <option *ngFor="let country of countriesRegions" [value]="country">{{country}}
                                     </option>
                                 </select>
@@ -100,7 +104,8 @@
 
                     <section *ngIf="step === 2">
                         <div class="w-full">
-                            <label class="text-gray-800 text-sm mb-2 block font-semibold" for="username">Username</label>
+                            <label class="text-gray-800 text-sm mb-2 block font-semibold"
+                                for="username">Username</label>
                             <input name="username" type="text" required [(ngModel)]="user.username"
                                 class="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600"
                                 placeholder="Enter username" [ngClass]="username_error? '' : 'mb-5'"
@@ -122,7 +127,8 @@
                         </div>
 
                         <div class="relative w-full">
-                            <label class="text-gray-800 text-sm mb-2 block font-semibold" for="password">Password</label>
+                            <label class="text-gray-800 text-sm mb-2 block font-semibold"
+                                for="password">Password</label>
                             <input name="password" [type]="showPassword ? 'text' : 'password'" required
                                 [(ngModel)]="user.password"
                                 class="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600"
@@ -154,7 +160,8 @@
 
 
                         <div class="relative w-full">
-                            <label class="text-gray-800 text-sm mb-2 block font-semibold" for="cfrm_password">Confirm Password</label>
+                            <label class="text-gray-800 text-sm mb-2 block font-semibold" for="cfrm_password">Confirm
+                                Password</label>
                             <input name="cfrm_password" [type]="showConfirmPassword ? 'text' : 'password'" required
                                 [(ngModel)]="user.confirmPassword"
                                 class="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600"
@@ -190,7 +197,8 @@
                             class="w-full font-bold shadow-xl py-3 px-4 text-md tracking-wide rounded-lg text-gray-600 border-blue-600 border-2 hover:bg-blue-100 focus:outline-none">
                             Back
                         </button>
-                        <button type="button" (click)="step ===1? toStep(2) : register()" [disabled]="validateStep1()" [ngClass]="validateStep1()? 'cursor-not-allowed' : 'cursor-pointer hover:bg-blue-700'"
+                        <button type="button" (click)="step ===1? toStep(2) : register()" [disabled]="validateStep1()"
+                            [ngClass]="validateStep1()? 'cursor-not-allowed' : 'cursor-pointer hover:bg-blue-700'"
                             class="w-full font-bold shadow-xl py-3 px-4 text-md tracking-wide rounded-lg text-white bg-blue-600 focus:outline-none">
                             {{step ===1? 'Next' : 'Register'}}
                         </button>

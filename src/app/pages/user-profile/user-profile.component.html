@@ -59,11 +59,17 @@
                 [ngClass]="!isEditable? 'cursor-not-allowed' : ''" />
         </div>
 
-        <div class="flex flex-col col-span-1 md:col-span-2">
-            <label for="address" class="text-gray-600 dark:text-gray-300 font-semibold">Address</label>
-            <input id="address" type="text" [(ngModel)]="customer.address" [readonly]="!isEditable"
+        <div class="flex flex-col">
+            <label for="address" class="text-gray-600 dark:text-gray-300 font-semibold">Country</label>
+            <select id="gender" [disabled]="!isEditable" [(ngModel)]="customer.country"
                 class="mt-2 p-4 border border-gray-300 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 focus:border-blue-500 dark:focus:border-blue-400 focus:outline-none transition"
-                [ngClass]="!isEditable? 'cursor-not-allowed' : ''" />
+                [ngClass]="!isEditable? 'cursor-not-allowed' : ''">
+                <option value="" disabled>Select country</option>
+                <option *ngFor="let country of countriesRegions" [value]="country">
+                    {{ country }}
+                </option>
+            </select>
+
         </div>
 
         <div class="flex flex-col col-span-1 md:col-span-2">

@@ -37,7 +37,7 @@ export class ExploreComponent {
 
   public searchTxt: string = "";
   selectedId: number | null = null;
-  public resourceOptions: string[] = ["Rooms", "Halls", "Day Out Packages"]
+  public resourceOptions: string[] = ["Rooms", "Function Halls", "Day Out Packages"]
 
   showMobileFilters = true;
   showResourceDropdown = false;
@@ -142,7 +142,8 @@ export class ExploreComponent {
     this.selectedResource = resource;
 
     return new Promise<void>((resolve, reject) => {
-      this.http.get(`http://localhost:8080/${resource === this.resourceOptions[0]
+      this.http.get(`http://localhost:8080/${
+        resource === this.resourceOptions[0]
         ? "room"
         : resource === this.resourceOptions[1]
           ? 'hall'
@@ -151,9 +152,7 @@ export class ExploreComponent {
               this.resources = data;
               this.permenentResources = data;
               this.getResourcesFilterLists();
-              resolve();
-            },
-            error: (error) => reject(error),
+            }
           });
     });
   }
@@ -190,8 +189,6 @@ export class ExploreComponent {
       this.selectedFilters[category].push(value);
     }
 
-    console.log(this.selectedFilters);
-    console.log(this.resources)
     this.filterResources();
   }
 

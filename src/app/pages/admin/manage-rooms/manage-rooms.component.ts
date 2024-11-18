@@ -4,6 +4,7 @@ import { Room } from '../../../model/Room';
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { PopupCardComponent } from "../../../common/popup-card/popup-card.component";
 import { FormsModule } from '@angular/forms';
+import LZUTF8 from 'lzutf8';
 
 @Component({
   selector: 'app-manage-rooms',
@@ -22,6 +23,8 @@ export class ManageRoomsComponent {
   availableFiler = "All"
   ratingFiler = "All"
 
+  newRoom: Room = new Room('', '', '', '', 0, '', 0, '', '', false, false, '', 0, false);
+
   constructor(private http: HttpClient) {
     this.loadRooms();
   }
@@ -29,6 +32,7 @@ export class ManageRoomsComponent {
   loadRooms() {
     this.http.get<Room[]>("http://localhost:8080/room/get/all").subscribe(data => {
       data.forEach(obj => {
+        console.log(obj)
         this.loading = false
         this.roomList.push(obj);
         this.permenentRoomList.push(obj);
@@ -79,15 +83,27 @@ export class ManageRoomsComponent {
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
+      const file = input.files[0];
       const reader = new FileReader();
+
       reader.onload = () => {
-        this.imagePreview = reader.result;
+        // const base64String = reader.result as string;
+        // this.newRoom.image = LZUTF8.compress(base64String);        
+        // this.imagePreview = base64String;
       };
-      reader.readAsDataURL(input.files[0]);
-    }
+
+      reader.readAsDataURL(file);
+    }    
   }
 
   removeImage(): void {
     this.imagePreview = null;
+    this.newRoom.image = '';
+  }
+
+  addRoom(){
+    // this.http.post("http://localhost:8080/room", this.newRoom).subscribe(data => {
+    //   console.log(data)
+    // })
   }
 }

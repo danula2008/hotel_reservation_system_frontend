@@ -1,5 +1,5 @@
 export class User {
-    id: string;
+    id: string | null;
     username: string;
     password: string;
     name: string;
@@ -9,7 +9,7 @@ export class User {
     lastLogin: Date;
 
     constructor(
-        id: string,
+        id: string | null,
         username: string,
         password: string,
         name: string,
@@ -29,7 +29,7 @@ export class User {
     }
 
     // Getters
-    getId(): string {
+    getId(): string | null {
         return this.id;
     }
 

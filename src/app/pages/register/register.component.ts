@@ -1,12 +1,14 @@
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { HttpClient } from '@angular/common/http';
+import { User } from '../../model/User';
+import { Customer } from '../../model/Customer';
 
 @Component({
   selector: 'app-register',
@@ -17,9 +19,10 @@ import { HttpClient } from '@angular/common/http';
 })
 export class RegisterComponent {
 
-  constructor(public http: HttpClient) {}
+  constructor(public http: HttpClient, private router: Router) { }
 
   step = 1;
+  registering = false;
 
   showPassword = false
   showConfirmPassword = false
@@ -58,16 +61,18 @@ export class RegisterComponent {
   email_error = ''
   password_error = ''
   confirmPassword_error = ''
+  usernameAvailable = false
+  passwordsMatch = false
 
   user = {
-    firstName: null,
-    lastName: null,
-    gender: null,
+    firstName: '',
+    lastName: '',
+    gender: '',
     dateOfBirth: null,
-    contact: null,
-    country: null,
-    username: null,
-    email: null,
+    contact: '',
+    country: '',
+    username: '',
+    email: '',
     password: '',
     confirmPassword: ''
   };
@@ -182,31 +187,90 @@ export class RegisterComponent {
   }
 
   async register() {
-    // await this.checkUsernameAvailable();
+    await this.checkUsernameAvailable();
+
     if (this.user.confirmPassword !== this.user.password) {
       this.confirmPassword_error = 'Passwords do not match.';
+      this.passwordsMatch = false
+    } else {
+      this.passwordsMatch = true
     }
 
-    if(!this.user.username || !this.user.email || !this.user.password || this.user.confirmPassword || this.username_error || this.email_error || this.password_error || this.confirmPassword_error){
-      // await this.registerUser()
-      console.log("Registered");
-      
+    if (!(
+      this.passwordsMatch === false ||
+      this.usernameAvailable === false ||
+      this.user.firstName === '' ||
+      this.user.lastName === '' ||
+      this.user.gender === '' ||
+      !this.user.dateOfBirth ||
+      this.user.contact === '' ||
+      this.user.country === '' ||
+      this.user.username === '' ||
+      this.user.email === '' ||
+      this.user.password === '' ||
+      this.user.confirmPassword === '' ||
+      this.fName_error ||
+      this.lName_error ||
+      this.gender_error ||
+      this.dob_error ||
+      this.contact_error ||
+      this.country_error ||
+      this.username_error ||
+      this.email_error ||
+      this.password_error ||
+      this.confirmPassword_error
+    )) {
+      this.registerUser();
+    }
+
+  }
+
+  async checkUsernameAvailable(): Promise<void> {
+    const data: any = await this.http.get(`http://localhost:8080/user/username-available/${this.user.username}`).toPromise();
+    if (!data) {
+      this.username_error = "Username taken, enter another.";
+    } else {
+      this.usernameAvailable = true;
     }
   }
 
-  async checkUsernameAvailable() {
-    // this.http.get(`http://localhost:8080/user/username-available/${this.user.username}`).subscribe(data => {
-    //   if (!data){
-    //     this.username_error = "Username taken, enter another."
-    //   }
-    // })
+  async registerUser(): Promise<void> {
+    this.registering = true;
+
+    this.http
+      .post<User>(
+        "http://localhost:8080/user",
+        new User(
+          null,
+          this.user.username,
+          this.user.password,
+          this.user.firstName + " " + this.user.lastName,
+          this.user.email,
+          "customer",
+          new Date(),
+          new Date()
+        )
+      )
+      .subscribe(user => this.http
+        .post(
+          "http://localhost:8080/customer",
+          new Customer(
+            null,
+            this.user.gender,
+            this.user.dateOfBirth,
+            this.user.contact,
+            this.user.country,
+            user.id,
+            this.user.lastName,
+            this.user.firstName
+          )
+        ).subscribe(customer => {
+          localStorage.setItem("user", JSON.stringify(user))
+          this.registering = false;
+          this.router.navigate([''])
+        })
+      )
+
   }
 
-  async registerUser() {
-    // this.http.post(`http://localhost:8080/user//${this.user.username}`).subscribe(data => {
-    //   if (!data){
-    //     this.username_error = "Username taken, enter another."
-    //   }
-    // })
-  }
 }

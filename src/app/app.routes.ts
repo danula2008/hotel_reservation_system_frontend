@@ -12,6 +12,7 @@ import { OverviewComponent } from '../app/pages/admin/overview/overview.componen
 import { ManageHallsComponent } from './pages/admin/manage-halls/manage-halls.component';
 import { ManageDopComponent } from './pages/admin/manage-dop/manage-dop.component';
 import { ManageUserComponent } from './pages/admin/manage-user/manage-user.component';
+import { ManageCustomerComponent } from './pages/admin/manage-customer/manage-customer.component';
 
 export const routes: Routes = [
     {
@@ -55,6 +56,9 @@ export const routes: Routes = [
             }, {
                 path: "users",
                 component: ManageUserComponent
+            }, {
+                path: "customers",
+                component: ManageCustomerComponent
             }
         ]
     }

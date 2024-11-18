@@ -47,7 +47,7 @@ export class ManageUserComponent {
   }
 
   searchTextFilter() {
-    this.userList = this.permenentUserList.filter(user => user.name.toLowerCase().startsWith(this.searchTxt.toLowerCase()) || user.username.toLowerCase().startsWith(this.searchTxt.toLowerCase()) || user.id.toLowerCase().includes(this.searchTxt.toLowerCase()))
+    this.userList = this.permenentUserList.filter(user => user.name.toLowerCase().startsWith(this.searchTxt.toLowerCase()) || user.username.toLowerCase().startsWith(this.searchTxt.toLowerCase()) || user.id?.toLowerCase().includes(this.searchTxt.toLowerCase()))
   }
 
   showModel(user: User) {
