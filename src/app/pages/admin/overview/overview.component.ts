@@ -57,6 +57,13 @@ export class OverviewComponent {
   barChart: any;
   lineChart: any;
 
+  today = new Date();
+  labels = Array.from({ length: 31 }, (_, i) => {
+    const date = new Date(this.today);
+    date.setDate(this.today.getDate() - 15 + i);
+    return `${date.getMonth() + 1}/${date.getDate()}`;
+  });
+
   createBarChart(): void {
     const canvas = document.getElementById('bar-chart') as HTMLCanvasElement;
 
@@ -64,7 +71,7 @@ export class OverviewComponent {
       this.barChart = new Chart(canvas, {
         type: 'bar',
         data: {
-          labels: Array.from({ length: 31 }, (_, i) => `Day ${i + 1}`),
+          labels: this.labels,
           datasets: [
             {
               label: 'Room Reservations',
@@ -121,7 +128,7 @@ export class OverviewComponent {
       console.error('Bar chart canvas element not found');
     }
   }
-  
+
 
   createLineChart(): void {
     const canvas = document.getElementById('line-chart') as HTMLCanvasElement;
@@ -130,7 +137,7 @@ export class OverviewComponent {
       this.lineChart = new Chart(canvas, {
         type: 'line',
         data: {
-          labels: Array.from({ length: 31 }, (_, i) => `Day ${i + 1}`),
+          labels: this.labels,
           datasets: [
             {
               label: 'Room Reservations',
