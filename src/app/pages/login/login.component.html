@@ -29,7 +29,8 @@
                     <div>
                         <label class="text-gray-800 text-md mb-2 block font-semibold" for="password">Password</label>
                         <div class="relative flex items-center">
-                            <input name="password" [type]="showPassword ? 'text' : 'password'" required [(ngModel)]="password"
+                            <input name="password" [type]="showPassword ? 'text' : 'password'" required
+                                [(ngModel)]="password"
                                 class="w-full text-sm text-gray-800 border border-gray-300 px-4 py-3 rounded-lg outline-blue-600 transition duration-200 ease-in-out"
                                 placeholder="Enter password" />
 
@@ -62,10 +63,20 @@
                     </div>
 
                     <div class="!mt-8">
-                        <button type="button" (click)="checkUsernamePassword()"
+                        <button type="button" (click)="checkUsernamePassword()" [disabled]="loading"
                             class="w-full shadow-xl py-3 px-4 text-md font-bold tracking-wide rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none">
-                            Log in
+                            <span *ngIf="!loading">Log in</span>
+                            <span *ngIf="loading" class="flex items-center justify-center">
+                                <svg class="animate-spin h-5 w-5 text-white mr-2" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                        stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                                </svg>
+                                Loading...
+                            </span>
                         </button>
+
                     </div>
 
                     <div class="text-sm !mt-8 text-center">

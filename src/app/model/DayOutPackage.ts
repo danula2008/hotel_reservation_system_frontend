@@ -10,7 +10,7 @@ export class DayOutPackage {
     timeOfDay: string;
     foodDetails: string;
     groupSize: string;
-    image: Blob | null;
+    image: string | ArrayBuffer | null;
     rating: number;
     available: boolean;
 
@@ -26,7 +26,7 @@ export class DayOutPackage {
         timeOfDay: string,
         foodDetails: string,
         groupSize: string,
-        image: Blob | null,
+        image: string | ArrayBuffer | null,
         rating: number,
         available: boolean
     ) {
@@ -90,7 +90,7 @@ export class DayOutPackage {
         return this.groupSize;
     }
 
-    public getImage(): Blob | null {
+    public getImage(): string | ArrayBuffer | null {
         return this.image;
     }
 

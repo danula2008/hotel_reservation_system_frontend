@@ -197,11 +197,25 @@
                             class="w-full font-bold shadow-xl py-3 px-4 text-md tracking-wide rounded-lg text-gray-600 border-blue-600 border-2 hover:bg-blue-100 focus:outline-none">
                             Back
                         </button>
-                        <button type="button" (click)="step ===1? toStep(2) : register()" [disabled]="validateStep1()"
-                            [ngClass]="validateStep1()? 'cursor-not-allowed' : 'cursor-pointer hover:bg-blue-700'"
-                            class="w-full font-bold shadow-xl py-3 px-4 text-md tracking-wide rounded-lg text-white bg-blue-600 focus:outline-none">
-                            {{step ===1? 'Next' : 'Register'}}
+                        <button type="button" (click)="step === 1 ? toStep(2) : register()"
+                            [disabled]="validateStep1() || registering" [ngClass]="
+                                validateStep1()
+                                ? 'cursor-not-allowed'
+                                : 'cursor-pointer hover:bg-blue-700'" 
+                                class="w-full font-bold shadow-xl py-3 px-4 text-md tracking-wide rounded-lg text-white bg-blue-600 focus:outline-none">
+                            <ng-container *ngIf="!registering">
+                                {{ step === 1 ? 'Next' : 'Register' }}
+                            </ng-container>
+                            <ng-container *ngIf="registering">
+                                <svg class="animate-spin h-5 w-5 mx-auto text-white" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                        stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                                </svg>
+                            </ng-container>
                         </button>
+
                     </div>
 
                     <p class="text-sm !mt-8 text-center text-gray-800">Have an account? <a routerLink="/login"

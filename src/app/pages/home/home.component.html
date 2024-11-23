@@ -68,78 +68,23 @@
     </div>
 </section>
 
-
-<!-- <section>
-    <h1
-        class="max-w-2xl mb-4 text-md font-semibold tracking-tight leading-none md:text-lg xl:text-xl text-[#152C5B] dark:text-white font-poppins">
-        Most Picked
-    </h1>
-    <div class="md:flex gap-16 mx-auto hidden">
-        <app-card *ngFor="let item of [].constructor(4); let i = index" [star]="i" [popularChoice]="true"></app-card>
-    </div>
-
-    <swiper-container ngSkipHydration loop="true" autoplay="true" autoplay-delay="5000" navigation="false" pagination="true"
-        space-between="28" slides-per-view="3" lazy="true" breakpoints='{
-        "630": {"slidesPerView": 2, "spaceBetween": 28},
-        "768": {"slidesPerView": 2, "spaceBetween": 28},
-        "1024": {"slidesPerView": 2, "spaceBetween": 32}
-    }' class="swiper testimonialsSwiper w-full lg:w-3/5 md:hidden flex">
-        <swiper-slide *ngFor="let item of [].constructor(4); let i = index" class="p-5 mb-5">
-            <app-card [star]="i" [popularChoice]="true"></app-card>
-        </swiper-slide>
-    </swiper-container>
-
-</section> -->
-
-<!-- <section *ngFor="let resource_item of resources" class="mt-16">
-    <h1
-        class="max-w-2xl mb-4 text-md font-semibold tracking-tight leading-none md:text-lg xl:text-xl text-[#152C5B] dark:text-white font-poppins">
-        {{ resource_item[0] }}
-    </h1>
-
-    <swiper-container ngSkipHydration loop="true" autoplay="true" autoplay-delay="5000" navigation="false"
-        pagination="true" space-between="28" slides-per-view="3" lazy="true" [breakpoints]="{
-        '768': { 'slidesPerView': 1, 'spaceBetween': 28 },
-        '1060': { 'slidesPerView': 2, 'spaceBetween': 28 },
-        '1200': { 'slidesPerView': 3, 'spaceBetween': 28 }
-    }" class="swiper testimonialsSwiper w-full flex">
-
-        <swiper-slide *ngFor="let item of resource_item[1]" class="p-5 mb-5 w-full">
-            <app-card [resource]="item"></app-card>
-        </swiper-slide>
-
-    </swiper-container>
-
-    <div class="mt-5 text-center">
-        <a routerLink="explore"
-            class="inline-flex items-center px-3 py-2 text-sm text-center dark:text-white text-gray-700 hover:scale-105 font-semibold transition-transform duration-700 ease-in-out transform">
-            Explore More
-            <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                fill="none" viewBox="0 0 14 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M1 5h12m0 0L9 1m4 4L9 9" />
-            </svg>
-        </a>
-    </div>
-</section> -->
-
-
-<section>
+<section class="ps-5 mt-16 md:mt-0" id="trendingPicks">
     <h1
         class="max-w-2xl mb-4 text-md font-semibold tracking-tight leading-none md:text-lg xl:text-xl text-[#152C5B] dark:text-white font-poppins">
         Hotel Rooms
     </h1>
 
     <swiper-container ngSkipHydration loop="true" autoplay="true" autoplay-delay="5000" navigation="false"
-        pagination="true" space-between="28" slides-per-view="3" lazy="true" [breakpoints]="{
-        '768': { 'slidesPerView': 1, 'spaceBetween': 28 },
-        '1060': { 'slidesPerView': 2, 'spaceBetween': 28 },
-        '1200': { 'slidesPerView': 3, 'spaceBetween': 28 }
-    }" class="swiper testimonialsSwiper w-full flex">
-        <swiper-slide *ngFor="let item of rooms" class="p-5 mb-5 w-full">
+        pagination="true" space-between="28" slides-per-view="2" lazy="true" breakpoints='{
+            "200": {"slidesPerView": 1, "spaceBetween": 28},
+            "768": {"slidesPerView": 2, "spaceBetween": 28},
+            "1024": {"slidesPerView": 3, "spaceBetween": 32}
+        }' class="swiper testimonialsSwiper w-full">
+        <swiper-slide *ngFor="let item of rooms" class="p-5 mb-5 w-full" routerLink="/explore">
             <app-card [resource]="item"></app-card>
         </swiper-slide>
     </swiper-container>
+
 
 
     <div class="mt-5 text-center">
@@ -155,19 +100,19 @@
     </div>
 </section>
 
-<section class="mt-16">
+<section class="mt-16 ms-5">
     <h1
         class="max-w-2xl mb-4 text-md font-semibold tracking-tight leading-none md:text-lg xl:text-xl text-[#152C5B] dark:text-white font-poppins">
         Hotel Halls
     </h1>
 
     <swiper-container ngSkipHydration loop="true" autoplay="true" autoplay-delay="5000" navigation="false"
-        pagination="true" space-between="28" slides-per-view="3" lazy="true" [breakpoints]="{
-        '768': { 'slidesPerView': 1, 'spaceBetween': 28 },
-        '1060': { 'slidesPerView': 2, 'spaceBetween': 28 },
-        '1200': { 'slidesPerView': 3, 'spaceBetween': 28 }
-    }" class="swiper testimonialsSwiper w-full flex">
-        <swiper-slide *ngFor="let item of halls" class="p-5 mb-5 w-full">
+        pagination="true" space-between="28" slides-per-view="2" lazy="true" breakpoints='{
+            "200": {"slidesPerView": 1, "spaceBetween": 28},
+            "768": {"slidesPerView": 2, "spaceBetween": 28},
+            "1024": {"slidesPerView": 3, "spaceBetween": 32}
+        }' class="swiper testimonialsSwiper w-full">
+        <swiper-slide *ngFor="let item of halls" class="p-5 mb-5 w-full" routerLink="/explore">
             <app-card [resource]="item"></app-card>
         </swiper-slide>
     </swiper-container>
@@ -186,19 +131,19 @@
     </div>
 </section>
 
-<section class="mt-16">
+<section class="mt-16 ms-5">
     <h1
         class="max-w-2xl mb-4 text-md font-semibold tracking-tight leading-none md:text-lg xl:text-xl text-[#152C5B] dark:text-white font-poppins">
         Hotel Day Out Packages
     </h1>
 
     <swiper-container ngSkipHydration loop="true" autoplay="true" autoplay-delay="5000" navigation="false"
-        pagination="true" space-between="28" slides-per-view="3" lazy="true" [breakpoints]="{
-        '768': { 'slidesPerView': 1, 'spaceBetween': 28 },
-        '1060': { 'slidesPerView': 2, 'spaceBetween': 28 },
-        '1200': { 'slidesPerView': 3, 'spaceBetween': 28 }
-    }" class="swiper testimonialsSwiper w-full flex">
-        <swiper-slide *ngFor="let item of dop" class="p-5 mb-5 w-full">
+        pagination="true" space-between="28" slides-per-view="2" lazy="true" breakpoints='{
+            "200": {"slidesPerView": 1, "spaceBetween": 28},
+            "768": {"slidesPerView": 2, "spaceBetween": 28},
+            "1024": {"slidesPerView": 3, "spaceBetween": 32}
+        }' class="swiper testimonialsSwiper w-full">
+        <swiper-slide *ngFor="let item of dop" class="p-5 mb-5 w-full" routerLink="/explore">
             <app-card [resource]="item"></app-card>
         </swiper-slide>
     </swiper-container>
@@ -214,9 +159,9 @@
             </svg>
         </a>
     </div>
-</section> 
+</section>
 
-<section class="py-24">
+<section class="py-24 ms-5" id="testimonials">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div
             class="flex justify-center items-center gap-y-8 lg:gap-y-0 flex-wrap md:flex-wrap lg:flex-nowrap lg:flex-row lg:justify-between lg:gap-x-8 max-w-sm sm:max-w-2xl lg:max-w-full mx-auto">

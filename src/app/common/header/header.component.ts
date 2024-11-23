@@ -1,16 +1,20 @@
-import { NgIf } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { NgIf, NgClass } from '@angular/common';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NavigationEnd, RouterLink } from '@angular/router';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [NgIf, RouterLink],
+  imports: [NgIf, RouterLink, NgClass],
   templateUrl: './header.component.html'
 })
-export class HeaderComponent implements OnInit {
-  constructor(private router: Router) { }
+export class HeaderComponent implements OnInit, OnDestroy {
+  currentUrl: string = '';
+  private routerSubscription!: Subscription;
+
+  constructor(private router: Router) {}
 
   userImg: string = '';
   userDetails = null;
@@ -32,6 +36,19 @@ export class HeaderComponent implements OnInit {
       this.userImg = `https://ui-avatars.com/api/?name=${jsonUser.name}&size=128&rounded=true&background=0D8ABC&color=fff`;
     } else {
       this.loggedIn = false
+    }
+
+    this.routerSubscription = this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.currentUrl = event.urlAfterRedirects;
+        console.log(this.currentUrl)
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
     }
   }
 

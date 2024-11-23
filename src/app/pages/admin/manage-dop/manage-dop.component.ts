@@ -35,12 +35,26 @@ export class ManageDopComponent {
 
   loadDops() {
     this.dopList = []
+    this.permenentDopList = []
     this.http.get<DayOutPackage[]>("http://localhost:8080/dop/get/all").subscribe(data => {
       data.forEach(obj => {
-        this.loading = false;
-        this.dopList.push(obj);
-        this.permenentDopList.push(obj);
+        this.http
+          .get(`http://localhost:8080/image?fileName=${obj.image}`, {
+            responseType: 'blob',
+          })
+          .subscribe(
+            (blob) => {
+              const reader = new FileReader();
+              reader.onloadend = () => {
+                obj.image = reader.result;
+              };
+              reader.readAsDataURL(blob);
+              this.dopList.push(obj);
+              this.permenentDopList.push(obj);
+            }
+          );
       })
+      this.loading = false
     })
   }
 

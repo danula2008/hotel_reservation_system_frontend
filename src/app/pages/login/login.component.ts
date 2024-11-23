@@ -17,6 +17,7 @@ export class LoginComponent {
 
   showPassword = false
   invalidType = ''
+  loading = false;
 
   usernameOrEmail = ''
   password = ''
@@ -26,6 +27,7 @@ export class LoginComponent {
   }
 
   async checkUsernamePassword() {
+    this.loading = true;
     let type = ''
     if (/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(this.usernameOrEmail)) {
       type = 'email'
@@ -36,9 +38,11 @@ export class LoginComponent {
     this.http.get<User>(`http://localhost:8080/user/validate-login/${type}?${type}=${encodeURIComponent(this.usernameOrEmail)}&password=${encodeURIComponent(this.password)}`).subscribe(data => {
       if (data) {
         localStorage.setItem('user', JSON.stringify(data))
+        this.loading = false;
         this.router.navigate([data.role === "Customer"? '' : '/admin'])
       } else {
         this.invalidType = type
+        this.loading = false;
       }
     })
   }

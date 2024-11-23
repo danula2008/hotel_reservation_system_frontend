@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -32,6 +32,7 @@ export class PopupCardComponent implements OnChanges {
 
   resourceFeaturesValues: any = [];
   resourceFeaturesNames: any = [];
+  public isLoading = true;
 
   dateRange = {
     startDate: null as Date | null,
@@ -87,11 +88,34 @@ export class PopupCardComponent implements OnChanges {
   }
 
   checkAvailability(): void {
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (
+      !this.dateRange.startDate ||
+      !this.dateRange.endDate
+    ) {
+      this.roomAvailabilityMsg = `Please select valid check-in and check-out date(s).`
+      return;
+    }
+
+    if (
+      new Date(this.dateRange.startDate) < today ||
+      new Date(this.dateRange.endDate) < today
+    ) {
+      this.roomAvailabilityMsg = `Please select date(s) in the future..`
+      return;
+    }
+
+
+
+
     this.http.get(`http://localhost:8080/reserve/date/check-availability?resourceId=${this.resource.id}&${this.generateDateRange(this.dateRange.startDate, this.dateRange.endDate).map(date => `dates=${date}`).join('&')}`).subscribe(data => {
       if (data) {
         this.isAvailable = true;
         this.roomAvailabilityMsg = `${this.resource.name} is available for all selected date(s).`
-      } else{
+      } else {
         this.roomAvailabilityMsg = `${this.resource.name} is not available for all selected date(s).`
       }
     })

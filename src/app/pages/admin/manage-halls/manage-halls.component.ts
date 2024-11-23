@@ -31,13 +31,27 @@ export class ManageHallsComponent {
 
   loadHalls() {
     this.hallList = []
+    this.permenentHallList = []
     this.http.get<Hall[]>("http://localhost:8080/hall/get/all").subscribe(data => {
       data.forEach(obj => {
-        this.loading = false
-        this.hallList.push(obj);
-        this.permenentHallList.push(obj);
+
+        this.http
+          .get(`http://localhost:8080/image?fileName=${obj.image}`, {
+            responseType: 'blob',
+          })
+          .subscribe(
+            (blob) => {
+              const reader = new FileReader();
+              reader.onloadend = () => {
+                obj.image = reader.result;
+              };
+              reader.readAsDataURL(blob);
+              this.hallList.push(obj);
+              this.permenentHallList.push(obj);
+            }
+          );
       })
-      console.log(this.hallList[0].available, this.hallList[0].id)
+      this.loading = false
     })    
   }
 

@@ -15,6 +15,7 @@ export class DashboardComponent implements OnInit{
 
       this.usersName = jsonUser.name
       this.usersEmail = jsonUser.email
+      this.username = jsonUser.username
 
       this.userImg = `https://ui-avatars.com/api/?name=${jsonUser.name}&size=128&rounded=true&background=0D8ABC&color=fff`;
     }
@@ -23,6 +24,7 @@ export class DashboardComponent implements OnInit{
   constructor(private router:Router){}
   
   usersName = '';
+  username = '';
   usersEmail = '';
   userImg = ''
 

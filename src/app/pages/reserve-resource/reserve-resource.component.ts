@@ -5,9 +5,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatButtonModule } from '@angular/material/button';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Customer } from '../../model/Customer';
+import { Reservation } from '../../model/Reservation';
 
 @Component({
   selector: 'app-reserve-resource',
@@ -20,6 +21,7 @@ import { Customer } from '../../model/Customer';
     MatFormFieldModule,
     MatInputModule,
     CommonModule,
+    RouterLink
   ],
   templateUrl: './reserve-resource.component.html'
 })
@@ -51,7 +53,7 @@ export class ReserveResourceComponent {
   resourceDetails: any;
 
   noDays = 0
-  noMembers = null
+  noMembers: string | null = null
   accommodationTypeRoom = ''
   specialRequests = ''
 
@@ -78,17 +80,20 @@ export class ReserveResourceComponent {
     this.placingReservation = true;
     const now = new Date();
     this.http.get<Customer>(`http://localhost:8080/customer/get/user_id/${JSON.parse(localStorage.getItem('user') || '{}').id}`).subscribe(customer => {
-      
-      this.http.post('http://localhost:8080/reservation/add', {
-        customerId: customer.id,
-        totPrice: this.resourceDetails.price * this.noDays,
-        status: "confirmed",
-        noMembers: this.noMembers,
-        paymentCompleted: false,
-        createdDate: now.toISOString().split('T')[0],
-        createdTime: now.toTimeString().split(' ')[0],
-        specialRequests: this.specialRequests,
-      }, { responseType: 'text' }).subscribe(reservationId => {
+
+      this.http.post('http://localhost:8080/reservation/add', 
+        new Reservation(
+          null,
+          customer.id,
+          this.resourceDetails.price * this.noDays,
+          "Confirmed",
+          Number.parseInt(this.noMembers?? ""),
+          false,
+          now.toISOString().split('T')[0],
+          now.toTimeString().split(' ')[0],
+          this.specialRequests,
+          this.resourceType
+        ), { responseType: 'text' }).subscribe(reservationId => {
 
         this.http.post(`http://localhost:8080/reserve/room/add`, {
           "reservationId": reservationId,

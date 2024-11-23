@@ -43,6 +43,7 @@ export class ManageUserComponent {
 
   loadUsers() {
     this.userList = []
+    this.permenentUserList = []
     this.http.get<User[]>("http://localhost:8080/user/get/all").subscribe(data => {
       data.forEach(obj => {
         this.loading = false

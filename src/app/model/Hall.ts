@@ -9,7 +9,7 @@ export class Hall {
     internetAccess: boolean;
     climateControl: boolean;
     decoratorStyle: string;
-    image: Blob | null;
+    image: string | ArrayBuffer | null;
     rating: number;
     available: boolean;
 
@@ -24,7 +24,7 @@ export class Hall {
         internetAccess: boolean,
         climateControl: boolean,
         decoratorStyle: string,
-        image: Blob | null,
+        image: string | ArrayBuffer | null,
         rating: number,
         available: boolean
     ) {
@@ -83,7 +83,7 @@ export class Hall {
         return this.decoratorStyle;
     }
 
-    public getImage(): Blob | null {
+    public getImage(): string | ArrayBuffer | null {
         return this.image;
     }
 

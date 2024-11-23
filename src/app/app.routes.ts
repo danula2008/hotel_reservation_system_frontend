@@ -13,6 +13,7 @@ import { ManageHallsComponent } from './pages/admin/manage-halls/manage-halls.co
 import { ManageDopComponent } from './pages/admin/manage-dop/manage-dop.component';
 import { ManageUserComponent } from './pages/admin/manage-user/manage-user.component';
 import { ManageCustomerComponent } from './pages/admin/manage-customer/manage-customer.component';
+import { ManageReservationComponent } from './pages/admin/manage-reservation/manage-reservation.component';
 
 export const routes: Routes = [
     {
@@ -59,6 +60,9 @@ export const routes: Routes = [
             }, {
                 path: "customers",
                 component: ManageCustomerComponent
+            }, {
+                path: "reservations",
+                component: ManageReservationComponent
             }
         ]
     }

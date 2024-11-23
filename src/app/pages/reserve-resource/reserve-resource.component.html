@@ -85,7 +85,7 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div class="flex flex-col items-center">
-                    <img src="https://via.placeholder.com/300" alt="Room Image" class="rounded-lg shadow-lg mb-4">
+                    <img [src]="resourceDetails.image" alt="Room Image" class="rounded-lg shadow-lg mb-4">
                     <h3 class="text-lg font-bold">{{resourceDetails.name}}</h3>
                     <p class="text-blue-900 font-semibold text-lg mt-3">Rs. {{resourceDetails.price}} <span
                             class="text-gray-700 text-sm">per day.</span></p>
@@ -142,7 +142,7 @@
             </div>
 
             <div class="flex justify-between w-full mt-10">
-                <button (click)="previousStep()"
+                <button routerLink="/explore"
                     class="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg shadow-sm hover:bg-gray-300 flex justify-center items-center gap-1">
                     Cancel
                 </button>
@@ -284,7 +284,7 @@
             <p class="text-center text-gray-500 mb-8">We are wating until you reach us.</p>
 
             <div class="flex justify-center items-center">
-                <img src="public/images/booking_completed.png" alt="Booking Completed">
+                <img src="/images/booking_completed.png" alt="Booking Completed">
             </div>
             <div class="text-center">
                 <button class="px-10 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-md my-5">

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, model } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Room } from '../../../model/Room';
 import { NgClass, NgFor, NgIf } from '@angular/common';
@@ -19,6 +19,7 @@ export class ManageRoomsComponent {
   permenentRoomList: Room[] = [];
   selectedRoom: Room | null = null;
   imagePreview: string | ArrayBuffer | null = null;
+  uploadedImage: File | null = null;
 
   searchTxt = ''
   availableFiler = "All"
@@ -32,12 +33,26 @@ export class ManageRoomsComponent {
 
   loadRooms() {
     this.roomList = []
+    this.permenentRoomList = []
     this.http.get<Room[]>("http://localhost:8080/room/get/all").subscribe(data => {
       data.forEach(obj => {
-        this.loading = false
-        this.roomList.push(obj);
-        this.permenentRoomList.push(obj);
+        this.http
+          .get(`http://localhost:8080/image?fileName=${obj.image}`, {
+            responseType: 'blob',
+          })
+          .subscribe(
+            (blob) => {
+              const reader = new FileReader();
+              reader.onloadend = () => {
+                obj.image = reader.result;
+              };
+              reader.readAsDataURL(blob);
+              this.roomList.push(obj);
+              this.permenentRoomList.push(obj);
+            }
+          );
       })
+      this.loading = false
     })
   }
 
@@ -110,27 +125,47 @@ export class ManageRoomsComponent {
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
-      const file = input.files[0];
+      this.uploadedImage = input.files[0];
       const reader = new FileReader();
 
       reader.onload = () => {
-        // const base64String = reader.result as string;
-        // this.newRoom.image = LZUTF8.compress(base64String);        
-        // this.imagePreview = base64String;
+        this.imagePreview = reader.result;
       };
 
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(this.uploadedImage);
     }
   }
 
   removeImage(): void {
     this.imagePreview = null;
-    this.newRoom.image = '';
+    this.uploadedImage = null;
   }
 
-  addRoom() {
-    this.http.post("http://localhost:8080/room", this.newRoom, { responseType: "text" }).subscribe(data => {
-      this.loadRooms()
-    })
+  addRoom(): void {
+    if (!this.uploadedImage) {
+      alert('Please select an image to upload');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('image', this.uploadedImage);
+
+    this.http.post(`http://localhost:8080/image/rooms`, formData, { responseType: 'text' })
+      .subscribe(path => {
+        this.newRoom.image = path
+        this.http.post(`http://localhost:8080/room`, this.newRoom, { responseType: 'text' })
+          .subscribe(data => {
+            Swal.fire({
+              title: "Room Added.",
+              text: data,
+              icon: "success"
+            });
+            this.newRoom = new Room('', '', '', '', 0, '', 0, '', '', false, false, '', 0, true);
+            this.imagePreview = null;
+            this.uploadedImage = null;
+          }
+          );
+      }
+      );
   }
 }

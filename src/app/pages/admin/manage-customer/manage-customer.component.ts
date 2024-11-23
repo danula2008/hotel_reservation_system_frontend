@@ -1,15 +1,13 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { NgClass, NgFor, NgIf } from '@angular/common';
-import { PopupCardComponent } from "../../../common/popup-card/popup-card.component";
+import { NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms'
 import { Customer } from '../../../model/Customer';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-manage-customer',
   standalone: true,
-  imports: [NgIf, NgFor, NgClass, PopupCardComponent, FormsModule],
+  imports: [NgIf, NgFor, FormsModule],
   templateUrl: './manage-customer.component.html'
 })
 export class ManageCustomerComponent {
@@ -40,6 +38,7 @@ export class ManageCustomerComponent {
 
   loadCustomers() {
     this.customerList = []
+    this.permenentCustomerList = []
     this.http.get<Customer[]>("http://localhost:8080/customer/get/all").subscribe(data => {
       data.forEach(obj => {
         this.loading = false
